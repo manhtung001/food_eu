@@ -1,0 +1,6 @@
+module Pods_loginScreen_loginScreenTests {
+  umbrella header "Pods-loginScreen-loginScreenTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

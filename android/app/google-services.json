@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1024541084460",
+    "project_id": "mega-ship",
+    "storage_bucket": "mega-ship.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024541084460:android:54069e080d0decd37cfa89",
+        "android_client_info": {
+          "package_name": "com.shipmpoint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024541084460-al0d7nrl95nt328jebuvsf28skaa5gkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2jiou2j0HBNjnAtYakhH7h6zjU8u3Aq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024541084460-al0d7nrl95nt328jebuvsf28skaa5gkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1024541084460-8l0mo1usc2kkfc81d93itiqh0umn5h11.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shipmpoint"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
