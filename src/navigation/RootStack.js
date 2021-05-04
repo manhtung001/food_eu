@@ -9,7 +9,9 @@
 import React, { useState } from 'react';
 import {
   LoginScreen,
-  OrderDetailScreen
+  Agent,
+  SearchScreen,
+  Cofirm
 } from '../screens/index'
 import RootTab from './RootTab';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -27,7 +29,9 @@ const RootStack = () => {
     >
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="RootTab" component={RootTab} />
-      <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} />
+      <Stack.Screen name="Agent" component={Agent} />
+      <Stack.Screen name="SearchScreen" component={SearchScreen} />
+      <Stack.Screen name="Cofirm" component={Cofirm} />
     </Stack.Navigator>
   );
 }

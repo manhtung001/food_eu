@@ -28,7 +28,8 @@ const LoginScreen = ({ navigation }) => {
 
   const login = async (phone, password, token) => {
     Keyboard.dismiss();
-    if (phone.trim() && passWord.trim()) {
+    // if (phone.trim() && passWord.trim()) {
+    if (true) {
       let data = {
         phone,
         password
@@ -38,13 +39,14 @@ const LoginScreen = ({ navigation }) => {
         password: '123456'
       }
       helpers.showLoading()
-      let res = await helpers.login(data);
+      navigation.replace('RootTab');
+      // let res = await helpers.login(data);
       helpers.hideModal()
-      if (res.code == 0) {
-        navigation.replace('RootTab');
-      } else {
-        helpers.showMessage({ content: res.message })
-      }
+      // if (res.code == 0) {
+      //   navigation.replace('RootTab');
+      // } else {
+      //   helpers.showMessage({ content: res.message })
+      // }
     } else {
       helpers.showMessage({ content: 'Vui lòng nhập số điện thoại và mật khẩu' })
     }

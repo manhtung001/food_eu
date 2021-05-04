@@ -13,15 +13,15 @@ import {
   StyleSheet,
   ScrollView,
   View,
+  Text,
+  TouchableOpacity
 } from 'react-native';
 
 import {
-  listPending,
-  listShipping,
-  listShipped,
+  listShop,
   Profile,
   NotificationScreen,
-  listCancelled
+  OrderScreen
 } from './../screens/index';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -31,11 +31,21 @@ import Color from '../constants/Color';
 const BottomTab = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
 
-const TopTabScreen = ({ route }) => {
+const TopTabScreen = (props) => {
+  const toSearch = () => {
+    props.navigation.navigate("SearchScreen")
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <Text>Giao hang den:</Text>
+      <TouchableOpacity
+        onPress={() => toSearch()}
+      >
+        <View>
+          <Text>Search</Text>
+        </View>
+      </TouchableOpacity>
       <TopTab.Navigator
-        initialRouteName="listPending"
         tabBarOptions={{
           activeTintColor: Color.Primary,
           inactiveTintColor: Color.GRAY,
@@ -46,10 +56,10 @@ const TopTabScreen = ({ route }) => {
         swipeEnabled={true}
 
       >
-        <TopTab.Screen name="Đang chờ" component={listPending} />
-        <TopTab.Screen name="Đang giao" component={listShipping} />
-        <TopTab.Screen name="Đã giao" component={listShipped} />
-        <TopTab.Screen name="Đã huỷ" component={listCancelled} />
+        <TopTab.Screen name="Gan toi" component={listShop} />
+        <TopTab.Screen name="ban chay" component={listShop} />
+        <TopTab.Screen name="danh gia" component={listShop} />
+        <TopTab.Screen name="more" component={listShop} />
       </TopTab.Navigator>
     </SafeAreaView>
   );
@@ -80,6 +90,22 @@ const RootTab = ({ route }) => {
               </View>
             ),
             tabBarLabel: 'Trang chủ',
+          }}
+        />
+        <BottomTab.Screen
+          name="OrderScreen"
+          component={OrderScreen}
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <View>
+                <Icon
+                  size={30}
+                  name="home"
+                  color={focused ? Color.Primary : Color.GRAY}
+                />
+              </View>
+            ),
+            tabBarLabel: 'Order',
           }}
         />
         <BottomTab.Screen

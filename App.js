@@ -9,7 +9,7 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import {
   Alert,
   View,
@@ -22,6 +22,8 @@ import configureStore from './src/redux/store';
 import helpers from './src/globals/helpers';
 import UiContainer from './src/uiModal/index';
 import Color from './src/constants/Color';
+import Geolocation from '@react-native-community/geolocation';
+
 
 let store = configureStore();
 helpers.setStore(store);
@@ -32,9 +34,14 @@ const App: () => React$Node = () => {
 
   useEffect(() => {
     SplashScreen.hide();
-    requestUserPermission();
-    handleRefreshToken();
+    // requestUserPermission();
+    // handleRefreshToken();
+    resquestGeo();
   }, [])
+
+  async function resquestGeo() {
+    Geolocation.getCurrentPosition(info => console.log(info));
+  }
 
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
@@ -82,15 +89,15 @@ const App: () => React$Node = () => {
   }
 
 
-  if (refreshingToken) {
-    return (
-      <View
-        style={{ flex: 1, justifyContent: "center" }}
-      >
-        <ActivityIndicator color={Color.Primary} size="large" style={{ alignSelf: 'center', marginTop: 10 }} />
-      </View>
-    );
-  }
+  // if (refreshingToken) {
+  //   return (
+  //     <View
+  //       style={{ flex: 1, justifyContent: "center" }}
+  //     >
+  //       <ActivityIndicator color={Color.Primary} size="large" style={{ alignSelf: 'center', marginTop: 10 }} />
+  //     </View>
+  //   );
+  // }
 
   return <Provider store={store}>
     <NavigationContainer>
