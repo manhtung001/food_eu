@@ -19,7 +19,8 @@ import {
   Alert,
   Image,
   FlatList,
-  Animated
+  Animated,
+  Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import dataService from '../../network/dataService';
@@ -28,139 +29,139 @@ import moment from 'moment';
 import Color from '../../constants/Color';
 import Icon from 'react-native-vector-icons/Ionicons';
 import helpers from '../../globals/helpers';
+import BottomSheet from 'reanimated-bottom-sheet';
 
+const Agent = (props) => {
+  const sheetRefCofirm = React.useRef(null);
+  const sheetRefCart = React.useRef(null);
+  const { data } = props.route.params;
 
-class Agent extends Component {
+  const toCofirm = () => {
+    props.navigation.navigate('Cofirm');
+  };
 
-  //////ANIMATION////////////////////
-  _scrollY = new Animated.Value(0);
+  const renderContentCofirm = () => (
+    <View style={styles.groupWrapper}>
+      <Text>renderContentCofirm</Text>
+    </View>
+  );
 
-  //////ANIMATION////////////////////
+  const renderContentCart = () => (
+    <View style={styles.groupWrapper}>
+      <Text>renderContentCofirm</Text>
+    </View>
+  );
 
-  toCofirm = () => {
-    this.props.navigation.navigate("Cofirm",)
-  }
-
-  render() {
-    const { data } = this.props.route.params;
-
-    let min = this._scrollY.interpolate({
-      inputRange: [-10, 0, 100, 200],
-      outputRange: [0, 0, 0, 200],
-    });
-
-    let translateY = Animated.diffClamp(min, 0, 100).interpolate({
-      inputRange: [0, 100],
-      outputRange: [0, 46],
-    });
-
-
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View>
-          <Animated.FlatList
-            bounces={true}
-            bouncesZoom={false}
-            onScroll={Animated.event(
-              [
-                {
-                  nativeEvent: {
-                    contentOffset: {
-                      y: this._scrollY,
-                    },
-                  },
-                },
-              ],
-              {
-                useNativeDriver: true,
-              },
-            )}
-            contentContainerStyle={{
-              paddingBottom: 50,
-            }}
-            keyExtractor={(item, index) => index + ''}
-            data={data.monans}
-            ListHeaderComponent={
-              <View>
-                <View
-                  style={{
-                    width: Layout.screen.width,
-                    height: Layout.screen.height / 4,
-                    backgroundColor: "pink"
-                  }}
-                />
-                <Text>{data.tencuahang}</Text>
-                <Text>{data.dienthoai}</Text>
-                <Text>{data.email}</Text>
-                <Text>{data.thoigianphucvu}</Text>
-                <Text>{data.thoigiangiaohang}</Text>
-              </View>
-            }
-            renderItem={({ item, index }) => (
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View>
+        <BottomSheet
+          ref={sheetRefCofirm}
+          snapPoints={[
+            0,
+            Dimensions.get('window').height / 2,
+            Dimensions.get('window').height / 1.3
+          ]}
+          borderRadius={10}
+          renderContent={renderContentCofirm}
+        />
+        <BottomSheet
+          ref={sheetRefCart}
+          snapPoints={[
+            0,
+            Dimensions.get('window').height / 2,
+            Dimensions.get('window').height / 1.3
+          ]}
+          borderRadius={10}
+          renderContent={renderContentCart}
+        />
+        <Animated.FlatList
+          bounces={true}
+          bouncesZoom={false}
+          contentContainerStyle={{
+            paddingBottom: 50
+          }}
+          keyExtractor={(item, index) => index + ''}
+          data={data.monans}
+          ListHeaderComponent={
+            <View>
               <View
                 style={{
-                  flexDirection: "row",
-                  marginTop: 10
+                  width: Layout.screen.width,
+                  height: Layout.screen.height / 4,
+                  backgroundColor: 'pink'
                 }}
-                key={item.mamonan}
-              >
-                <View
-                  style={{
-                    width: 90,
-                    height: 90,
-                    backgroundColor: "pink"
-                  }}
-                />
-                <View
-                  style={{
-                    flex: 1
-                  }}>
-                  <Text>{item.tenmonan}</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      flex: 1,
-                      alignItems: "flex-end"
-                    }}
-                  >
-                    <Text>{item.gia}</Text>
-                    <Text>+</Text>
-                  </View>
-                </View>
-              </View>
-            )}
-          />
-          <View style={[styles.wrapTab]}>
-            <View
+              />
+              <Text>{data.tencuahang}</Text>
+              <Text>{data.dienthoai}</Text>
+              <Text>{data.email}</Text>
+              <Text>{data.thoigianphucvu}</Text>
+              <Text>{data.thoigiangiaohang}</Text>
+            </View>
+          }
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
               style={{
                 flexDirection: 'row',
-                alignItems: "center"
+                marginTop: 10
+              }}
+              key={item.mamonan}
+              onPress={() => {
+                sheetRefCofirm.current.snapTo(2);
               }}
             >
               <View
                 style={{
-                  width: 70,
-                  height: 70,
-                  backgroundColor: "pink"
+                  width: 90,
+                  height: 90,
+                  backgroundColor: 'pink'
                 }}
               />
-              <Text>GIA</Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => this.toCofirm()}
-            >
-              <Text>GIAO HANG</Text>
+              <View
+                style={{
+                  flex: 1
+                }}
+              >
+                <Text>{item.tenmonan}</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flex: 1,
+                    alignItems: 'flex-end'
+                  }}
+                >
+                  <Text>{item.gia}</Text>
+                  <Text>+</Text>
+                </View>
+              </View>
             </TouchableOpacity>
+          )}
+        />
+        <View style={[styles.wrapTab]}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
+            <View
+              style={{
+                width: 70,
+                height: 70,
+                backgroundColor: 'pink'
+              }}
+            />
+            <Text>GIA</Text>
           </View>
-
+          <TouchableOpacity onPress={() => toCofirm()}>
+            <Text>GIAO HANG</Text>
+          </TouchableOpacity>
         </View>
-      </SafeAreaView>
-    );
-  }
-
-}
-
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   wrapTab: {
@@ -170,10 +171,15 @@ const styles = StyleSheet.create({
     backgroundColor: Color.Primary,
     position: 'absolute',
     bottom: 0,
-    justifyContent: "space-between",
-    alignItems: "center"
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
+  groupWrapper: {
+    backgroundColor: 'white',
+    height: 700,
+    borderRadius: 26,
+    overflow: 'hidden'
+  }
 });
-
 
 export default Agent;
