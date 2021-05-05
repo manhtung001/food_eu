@@ -20,7 +20,8 @@ import {
   Image,
   FlatList,
   Animated,
-  Dimensions
+  Dimensions,
+  Modal
 } from 'react-native';
 import { connect } from 'react-redux';
 import dataService from '../../network/dataService';
@@ -30,7 +31,7 @@ import Color from '../../constants/Color';
 import helpers from '../../globals/helpers';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Agent = (props) => {
   const sheetRefCofirm = React.useRef(null);
@@ -67,91 +68,148 @@ const Agent = (props) => {
   }
 
   const renderContentCofirm = () => (
-    <View style={styles.groupWrapper}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          marginLeft: 20
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            sheetRefCofirm.current.snapTo(0);
-            setCurrentFoodCount(1)
-          }}
-        ><Text>x</Text></TouchableOpacity>
-        <Text>Them mom an</Text>
+    <View style={[styles.groupWrapper, {
+      justifyContent: "space-between"
+    }]}>
+      <View>
         <View
           style={{
-            width: 90,
-            height: 1,
-          }}
-        />
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          width: "100%"
-        }}
-      >
-        <View
-          style={{
-            width: 90,
-            height: 90,
-            backgroundColor: "green"
-          }}
-        />
-        <View
-          style={{
-            flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingLeft: 10,
+            paddingVertical: 10,
+            backgroundColor: Color.GRAY3,
+            marginBottom: 30
           }}
         >
-          <Text>{currentFood.tenmonan}</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              flex: 1,
-              alignItems: "flex-end"
+          <TouchableOpacity
+            onPress={() => {
+              sheetRefCofirm.current.snapTo(0);
+              setCurrentFoodCount(1)
             }}
           >
-            <Text>{currentFood.gia}</Text>
+            <Ionicons
+              name="close"
+              size={30}
+              style={{
+                marginRight: 4
+              }}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 22,
+              fontFamily: helpers.fonts("regular"),
+            }}
+          >Thêm món mới</Text>
+          <View
+            style={{
+              width: 50,
+              height: 1,
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%"
+          }}
+        >
+          <View
+            style={{
+              width: 90,
+              height: 90,
+              backgroundColor: "green",
+              marginLeft: 10
+            }}
+          />
+          <View
+            style={{
+              flex: 1,
+              marginLeft: 10
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 24,
+                fontFamily: helpers.fonts("regular"),
+              }}
+            >{currentFood.tenmonan}</Text>
             <View
               style={{
                 flexDirection: "row",
+                justifyContent: "space-between",
+                flex: 1,
+                alignItems: "flex-end"
               }}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  let tmp = currentFoodCount;
-                  tmp >= 2 && setCurrentFoodCount(tmp -= 1)
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontFamily: helpers.fonts("regular"),
+                }}
+              >{currentFood.gia}đ</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginRight: 20,
+                  justifyContent: "space-between",
+                  width: 120,
+                  alignItems: "center"
                 }}
               >
-                <Text>-</Text>
-              </TouchableOpacity>
-              <Text>{currentFoodCount}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  let tmp = currentFoodCount;
-                  setCurrentFoodCount(tmp += 1)
-                }}
-              >
-                <Text>+</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    let tmp = currentFoodCount;
+                    tmp >= 2 && setCurrentFoodCount(tmp -= 1)
+                  }}
+                >
+                  <AntDesign
+                    name="minuscircle"
+                    size={30}
+                    color={Color.GRAY}
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 22,
+                    fontFamily: helpers.fonts("regular"),
+                  }}
+                >{currentFoodCount}</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    let tmp = currentFoodCount;
+                    setCurrentFoodCount(tmp += 1)
+                  }}
+                >
+                  <AntDesign
+                    name="pluscircle"
+                    size={30}
+                    color={Color.Primary}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
+
       </View>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          flex: 1,
-          alignItems: "flex-end",
+          borderTopColor: Color.GRAY,
+          borderTopWidth: 1,
+          padding: 10,
+          alignItems: "center"
         }}
       >
-        <Text>{parseInt(currentFood.gia) * currentFoodCount}</Text>
+        <Text
+          style={{
+            fontSize: 24,
+            fontFamily: helpers.fonts("bold"),
+          }}
+        >{parseInt(currentFood.gia) * currentFoodCount}đ</Text>
         <TouchableOpacity
           onPress={() => {
             let data = {
@@ -164,8 +222,21 @@ const Agent = (props) => {
             setCurrentFoodCount(1)
             sheetRefCofirm.current.snapTo(0);
           }}
+          style={{
+            paddingVertical: 8,
+            paddingHorizontal: 20,
+            borderRadius: 30,
+            borderColor: Color.Primary,
+            borderWidth: 1
+          }}
         >
-          <Text>them vao gio hang</Text>
+          <Text
+            style={{
+              fontSize: 22,
+              fontFamily: helpers.fonts("regular"),
+              color: Color.Primary
+            }}
+          >Thêm vào giỏ hàng</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -178,21 +249,53 @@ const Agent = (props) => {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            marginLeft: 20
+            paddingLeft: 10,
+            paddingVertical: 10,
+            backgroundColor: Color.GRAY3,
+            marginBottom: 30,
+            alignItems: "center"
           }}
         >
           <TouchableOpacity
             onPress={() => {
               sheetRefCart.current.snapTo(0);
             }}
-          ><Text>x</Text></TouchableOpacity>
-          <Text>Gio hang</Text>
-          <TouchableOpacity
-            onPress={() => setCurrentCart([])}
           >
-            <Text>xoa het</Text>
+            <Ionicons
+              name="close"
+              size={30}
+              style={{
+                paddingHorizontal: 12
+              }}
+            />
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontSize: 22,
+              fontFamily: helpers.fonts("regular"),
+            }}
+          >Giỏ hàng</Text>
+          <TouchableOpacity
+            onPress={() => {
+              helpers.showComfirm({
+                title: "Xoá tất cả món",
+                content: "Bạn có muốn xoá tất cả món trong giỏ hàng?",
+                onOk: () => setCurrentCart([]),
+                textOk: "Xoá tất cả"
+              })
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily: helpers.fonts("regular"),
+                color: Color.Primary,
+                marginRight: 10
+              }}
+            >Xoá hết</Text>
           </TouchableOpacity>
         </View>
+
         <ScrollView>
           {currentCart.map((item, index) => {
             return (
@@ -200,16 +303,36 @@ const Agent = (props) => {
                 key={index}
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-between"
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 30,
+                  paddingLeft: 10,
+                  borderBottomWidth: 1,
+                  borderBottomColor: Color.GRAY,
+                  paddingBottom: 14
                 }}
               >
                 <View>
-                  <Text>{item.tenmonan}</Text>
-                  <Text>{item.gia}</Text>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontFamily: helpers.fonts(),
+                    }}
+                  >{item.tenmonan}</Text>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontFamily: helpers.fonts(),
+                    }}
+                  >{item.gia}đ</Text>
                 </View>
                 <View
                   style={{
                     flexDirection: "row",
+                    marginRight: 20,
+                    justifyContent: "space-between",
+                    width: 100,
+                    alignItems: "center"
                   }}
                 >
                   <TouchableOpacity
@@ -217,15 +340,28 @@ const Agent = (props) => {
                       onChangeCount("de", item)
                     }}
                   >
-                    <Text>-</Text>
+                    <AntDesign
+                      name="minuscircle"
+                      size={26}
+                      color={Color.GRAY}
+                    />
                   </TouchableOpacity>
-                  <Text>{item.soluong}</Text>
+                  <Text
+                    style={{
+                      fontSize: 22,
+                      fontFamily: helpers.fonts("regular"),
+                    }}
+                  >{item.soluong}</Text>
                   <TouchableOpacity
                     onPress={() => {
                       onChangeCount("in", item)
                     }}
                   >
-                    <Text>+</Text>
+                    <AntDesign
+                      name="pluscircle"
+                      size={26}
+                      color={Color.Primary}
+                    />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -243,8 +379,7 @@ const Agent = (props) => {
           ref={sheetRefCofirm}
           snapPoints={[
             0,
-            Dimensions.get('window').height / 2,
-            Dimensions.get('window').height / 1.3
+            Dimensions.get('window').height / 1.05
           ]}
           borderRadius={10}
           renderContent={renderContentCofirm}
@@ -259,8 +394,7 @@ const Agent = (props) => {
             ref={sheetRefCart}
             snapPoints={[
               0,
-              Dimensions.get('window').height / 2,
-              Dimensions.get('window').height / 1.3
+              Dimensions.get('window').height / 1.05
             ]}
             borderRadius={10}
             renderContent={renderContentCart}
@@ -445,17 +579,20 @@ const Agent = (props) => {
             <Text
               style={{
                 fontSize: 26,
-                fontFamily: helpers.fonts("bold")
+                fontFamily: helpers.fonts("bold"),
+                marginLeft: 6
               }}
             >{onCountTotalMoney(currentCart)}đ</Text>
           </View>
           <TouchableOpacity
             style={{
               backgroundColor: Color.Primary,
-              padding: 14,
+              paddingHorizontal: 14,
+              paddingVertical: 10,
               borderRadius: 30,
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
+              marginVertical: 8
             }}
             onPress={() => toCofirm()}>
             <Text
@@ -489,8 +626,8 @@ const styles = StyleSheet.create({
   },
   groupWrapper: {
     backgroundColor: 'white',
-    height: Dimensions.get('window').height / 1.3,
-    borderTopStartRadius: 26,
+    height: Dimensions.get('window').height / 1.05,
+    borderTopStartRadius: 20,
     overflow: 'hidden',
     zIndex: 1
   }
