@@ -48,6 +48,32 @@ const helpers = {
     return store ? store.getState().userState.token : undefined;
   },
 
+  fonts: (font) => {
+    let fontFamily = 'iCielVAGRoundedNext-Light';
+    switch (font) {
+      case 'bold':
+        fontFamily = 'iCielVAGRoundedNext-Bold';
+        break;
+      case 'regular':
+        fontFamily = 'iCielVAGRoundedNext-Regular';
+        break;
+      case 'medium':
+        fontFamily = 'iCielVAGRoundedNext-Medium';
+        break;
+      case 'light':
+        fontFamily = 'iCielVAGRoundedNext-Light';
+        break;
+      case 'demiBold':
+        fontFamily = 'iCielVAGRoundedNext-DemiBold';
+        break;
+      case 'lightItalic':
+        fontFamily = 'iCielVAGRoundedNext-LightItalic';
+        break;
+      default:
+        fontFamily = 'iCielVAGRoundedNext-Light';
+    }
+    return fontFamily
+  },
   refreshToken: async () => {
     let token = null;
     try {

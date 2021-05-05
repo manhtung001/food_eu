@@ -38,7 +38,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -57,6 +57,12 @@
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>Fontisto.ttf</string>
+		<string>iCielVAGRoundedNext-Bold.otf</string>
+		<string>iCielVAGRoundedNext-DemiBold.otf</string>
+		<string>iCielVAGRoundedNext-Light.otf</string>
+		<string>iCielVAGRoundedNext-LightItalic.otf</string>
+		<string>iCielVAGRoundedNext-Medium.otf</string>
+		<string>iCielVAGRoundedNext-Regular.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -272,6 +272,14 @@ const Agent = (props) => {
             contentContainerStyle={{
               paddingBottom: 50
             }}
+            ListFooterComponent={
+              <View
+                style={{
+                  width: "100%",
+                  height: 50
+                }}
+              />
+            }
             keyExtractor={(item, index) => index + ''}
             data={data.monans}
             ListHeaderComponent={
@@ -304,33 +312,37 @@ const Agent = (props) => {
                     />
                     <Text
                       style={{
-                        fontWeight: "bold",
-                        fontSize: 26
+                        fontSize: 26,
+                        fontFamily: helpers.fonts("bold")
                       }}
                     >{data.tencuahang}</Text>
                   </View>
                   <Text
                     style={{
-                      fontSize: 16,
-                      marginTop: 4
+                      fontSize: 18,
+                      marginTop: 4,
+                      fontFamily: helpers.fonts()
                     }}
                   >SĐT: {data.dienthoai}</Text>
                   <Text
                     style={{
-                      fontSize: 16,
-                      marginTop: 4
+                      fontSize: 18,
+                      marginTop: 4,
+                      fontFamily: helpers.fonts()
                     }}
                   >Email: {data.email}</Text>
                   <Text
                     style={{
-                      fontSize: 16,
-                      marginTop: 4
+                      fontSize: 18,
+                      marginTop: 4,
+                      fontFamily: helpers.fonts()
                     }}
                   >Thời gian phục vụ: {data.thoigianphucvu}</Text>
                   <Text
                     style={{
-                      fontSize: 16,
-                      marginTop: 4
+                      fontSize: 18,
+                      marginTop: 4,
+                      fontFamily: helpers.fonts()
                     }}
                   >Thời gian giao hàng: {data.thoigiangiaohang}</Text>
                 </View>
@@ -351,7 +363,7 @@ const Agent = (props) => {
                   marginTop: 10,
                   paddingBottom: 20,
                   borderBottomWidth: 1,
-                  borderBottomColor: Color.GRAY2
+                  borderBottomColor: Color.GRAY3
                 }}
                 key={item.mamonan}
               >
@@ -371,6 +383,7 @@ const Agent = (props) => {
                   <Text
                     style={{
                       fontSize: 22,
+                      fontFamily: helpers.fonts("regular")
                     }}
                   >{item.tenmonan}</Text>
                   <View
@@ -384,10 +397,9 @@ const Agent = (props) => {
                     <Text
                       style={{
                         fontSize: 22,
-                        fontWeight: "500",
-                        fontFamily: 'Helvetica'
+                        fontFamily: helpers.fonts("regular")
                       }}
-                    >{item.gia}</Text>
+                    >{item.gia}đ</Text>
                     <TouchableOpacity
                       onPress={() => {
                         setCurrentFood(item)
@@ -409,6 +421,7 @@ const Agent = (props) => {
             )}
           />
         </View>
+
         <TouchableOpacity
           style={[styles.wrapTab]}
           onPress={() => {
@@ -421,17 +434,38 @@ const Agent = (props) => {
               alignItems: 'center'
             }}
           >
-            <View
+            <Ionicons
+              name="md-cart-outline"
+              size={50}
+              color={Color.Primary}
               style={{
-                width: 70,
-                height: 70,
-                backgroundColor: 'pink'
+                marginRight: 4,
               }}
             />
-            <Text>{onCountTotalMoney(currentCart)}đ</Text>
+            <Text
+              style={{
+                fontSize: 26,
+                fontFamily: helpers.fonts("bold")
+              }}
+            >{onCountTotalMoney(currentCart)}đ</Text>
           </View>
-          <TouchableOpacity onPress={() => toCofirm()}>
-            <Text>GIAO HANG</Text>
+          <TouchableOpacity
+            style={{
+              backgroundColor: Color.Primary,
+              padding: 14,
+              borderRadius: 30,
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+            onPress={() => toCofirm()}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily: helpers.fonts("regular"),
+                color: Color.WHITE,
+                marginHorizontal: 10
+              }}
+            >Giao hàng</Text>
           </TouchableOpacity>
         </TouchableOpacity>
       </View>
@@ -443,12 +477,15 @@ const styles = StyleSheet.create({
   wrapTab: {
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: Color.Primary,
+    backgroundColor: Color.WHITE,
     position: 'absolute',
     bottom: 0,
     justifyContent: 'space-between',
     alignItems: 'center',
-    zIndex: 5
+    zIndex: 5,
+    borderTopColor: Color.GRAY,
+    borderTopWidth: 1,
+    padding: 5
   },
   groupWrapper: {
     backgroundColor: 'white',

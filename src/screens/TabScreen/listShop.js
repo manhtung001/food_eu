@@ -38,6 +38,7 @@ import moment from 'moment';
 import Color from '../../constants/Color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import helpers from '../../globals/helpers';
 
 const LIMIT_DATA = 10;
 let LOADING = true;
@@ -253,21 +254,25 @@ const listShop = (props) => {
                   />
                   <Text
                     style={{
-                      fontWeight: "600",
-                      fontSize: 24
+                      fontSize: 24,
+                      marginTop: 4,
+                      fontFamily: helpers.fonts("regular")
                     }}
                   >{item.tencuahang}</Text>
                 </View>
                 <Text
                   style={{
-                    fontSize: 14,
-                    marginTop: 4
+                    fontSize: 16,
+                    marginTop: 4,
+                    fontFamily: helpers.fonts()
+
                   }}
                 >Email: {item.email}</Text>
                 <Text
                   style={{
-                    fontSize: 14,
-                    marginTop: 4
+                    fontSize: 16,
+                    marginTop: 4,
+                    fontFamily: helpers.fonts()
                   }}
                 >SĐT: {item.dienthoai}</Text>
               </View>
@@ -301,19 +306,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row"
 
-  },
-  cardText1: {
-    fontSize: 18,
-    fontWeight: "700"
-  },
-  cardText2: {
-    fontSize: 16,
-  },
-  cardTextDate: {
-    fontSize: 14,
-    fontWeight: "400",
-    alignSelf: "flex-end",
-    marginRight: 10
   },
 });
 

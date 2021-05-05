@@ -25,6 +25,9 @@ import UiContainer from './src/uiModal/index';
 import Color from './src/constants/Color';
 import Geolocation from '@react-native-community/geolocation';
 
+Text.defaultProps = Text.defaultProps || {}
+
+Text.defaultProps.style = { fontFamily: 'iCielVAGRoundedNext-Regular' }
 
 let store = configureStore();
 helpers.setStore(store);
