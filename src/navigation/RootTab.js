@@ -23,7 +23,8 @@ import {
   NotificationScreen,
   OrderScreen
 } from './../screens/index';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Color from '../constants/Color';
@@ -36,13 +37,36 @@ const TopTabScreen = (props) => {
     props.navigation.navigate("SearchScreen")
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <Text>Giao hang den:</Text>
       <TouchableOpacity
         onPress={() => toSearch()}
       >
-        <View>
-          <Text>Search</Text>
+        <View
+          style={{
+            width: "96%",
+            alignSelf: "center",
+            backgroundColor: Color.GRAY3,
+            borderRadius: 20,
+            padding: 10,
+            flexDirection: "row"
+          }}
+        >
+          <FontAwesome
+            size={22}
+            name="search"
+            color={Color.GRAY}
+            style={{
+              marginLeft: 10
+            }}
+          />
+          <Text
+            style={{
+              fontSize: 16,
+              color: Color.GRAY,
+              marginLeft: 10
+            }}
+          >Tìm kiếm</Text>
         </View>
       </TouchableOpacity>
       <TopTab.Navigator
@@ -82,7 +106,7 @@ const RootTab = ({ route }) => {
           options={{
             tabBarIcon: ({ focused, color, size }) => (
               <View>
-                <Icon
+                <FontAwesome
                   size={30}
                   name="home"
                   color={focused ? Color.Primary : Color.GRAY}
@@ -98,14 +122,14 @@ const RootTab = ({ route }) => {
           options={{
             tabBarIcon: ({ focused, color, size }) => (
               <View>
-                <Icon
+                <MaterialCommunityIcons
                   size={30}
-                  name="home"
+                  name="clipboard-list-outline"
                   color={focused ? Color.Primary : Color.GRAY}
                 />
               </View>
             ),
-            tabBarLabel: 'Order',
+            tabBarLabel: 'Đơn hàng',
           }}
         />
         <BottomTab.Screen
@@ -113,7 +137,7 @@ const RootTab = ({ route }) => {
           component={NotificationScreen}
           options={{
             tabBarIcon: ({ focused, color, size }) => (
-              <Icon
+              <FontAwesome
                 size={30}
                 color={focused ? Color.Primary : Color.GRAY}
                 name="bell"
@@ -127,7 +151,7 @@ const RootTab = ({ route }) => {
           component={Profile}
           options={{
             tabBarIcon: ({ focused, color, size }) => (
-              <Icon
+              <FontAwesome
                 size={30}
                 color={focused ? Color.Primary : Color.GRAY}
                 name="user-circle"

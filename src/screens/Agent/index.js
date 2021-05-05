@@ -27,30 +27,214 @@ import dataService from '../../network/dataService';
 import Layout from '../../constants/Layout';
 import moment from 'moment';
 import Color from '../../constants/Color';
-import Icon from 'react-native-vector-icons/Ionicons';
 import helpers from '../../globals/helpers';
 import BottomSheet from 'reanimated-bottom-sheet';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 const Agent = (props) => {
   const sheetRefCofirm = React.useRef(null);
   const sheetRefCart = React.useRef(null);
+  const [currentFood, setCurrentFood] = useState('');
+  let [currentFoodCount, setCurrentFoodCount] = useState(1);
+
+  const [currentCart, setCurrentCart] = useState([]);
   const { data } = props.route.params;
 
   const toCofirm = () => {
-    props.navigation.navigate('Cofirm');
+    props.navigation.navigate('Cofirm', { data: currentCart });
   };
+
+  const onChangeCount = (status, data) => {
+    let tmp = currentCart;
+    let tmp2 = tmp.map((item, index) => {
+      if (item.mamonan == data.mamonan) {
+        if (status == "de" && item.soluong >= 2) item.soluong -= 1;
+        else if (status == "in") item.soluong += 1
+      }
+      return item
+    })
+    setCurrentCart(tmp2)
+  }
+
+  const onCountTotalMoney = (data) => {
+    let tmp = data;
+    let total = 0;
+    tmp.length > 0 && tmp.forEach((item) => {
+      total += parseInt(item.gia) * item.soluong
+    })
+    return total;
+  }
 
   const renderContentCofirm = () => (
     <View style={styles.groupWrapper}>
-      <Text>renderContentCofirm</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginLeft: 20
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            sheetRefCofirm.current.snapTo(0);
+            setCurrentFoodCount(1)
+          }}
+        ><Text>x</Text></TouchableOpacity>
+        <Text>Them mom an</Text>
+        <View
+          style={{
+            width: 90,
+            height: 1,
+          }}
+        />
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          width: "100%"
+        }}
+      >
+        <View
+          style={{
+            width: 90,
+            height: 90,
+            backgroundColor: "green"
+          }}
+        />
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <Text>{currentFood.tenmonan}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              flex: 1,
+              alignItems: "flex-end"
+            }}
+          >
+            <Text>{currentFood.gia}</Text>
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  let tmp = currentFoodCount;
+                  tmp >= 2 && setCurrentFoodCount(tmp -= 1)
+                }}
+              >
+                <Text>-</Text>
+              </TouchableOpacity>
+              <Text>{currentFoodCount}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  let tmp = currentFoodCount;
+                  setCurrentFoodCount(tmp += 1)
+                }}
+              >
+                <Text>+</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          flex: 1,
+          alignItems: "flex-end",
+        }}
+      >
+        <Text>{parseInt(currentFood.gia) * currentFoodCount}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            let data = {
+              ...currentFood,
+              soluong: currentFoodCount
+            }
+            let tmp = currentCart
+            let tmp2 = tmp.concat(data);
+            setCurrentCart(tmp2);
+            setCurrentFoodCount(1)
+            sheetRefCofirm.current.snapTo(0);
+          }}
+        >
+          <Text>them vao gio hang</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
-  const renderContentCart = () => (
-    <View style={styles.groupWrapper}>
-      <Text>renderContentCofirm</Text>
-    </View>
-  );
+  const renderContentCart = () => {
+    return (
+      <View style={styles.groupWrapper}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginLeft: 20
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              sheetRefCart.current.snapTo(0);
+            }}
+          ><Text>x</Text></TouchableOpacity>
+          <Text>Gio hang</Text>
+          <TouchableOpacity
+            onPress={() => setCurrentCart([])}
+          >
+            <Text>xoa het</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView>
+          {currentCart.map((item, index) => {
+            return (
+              <View
+                key={index}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <View>
+                  <Text>{item.tenmonan}</Text>
+                  <Text>{item.gia}</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      onChangeCount("de", item)
+                    }}
+                  >
+                    <Text>-</Text>
+                  </TouchableOpacity>
+                  <Text>{item.soluong}</Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      onChangeCount("in", item)
+                    }}
+                  >
+                    <Text>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    )
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -64,81 +248,173 @@ const Agent = (props) => {
           ]}
           borderRadius={10}
           renderContent={renderContentCofirm}
+          zIndex={1}
         />
-        <BottomSheet
-          ref={sheetRefCart}
-          snapPoints={[
-            0,
-            Dimensions.get('window').height / 2,
-            Dimensions.get('window').height / 1.3
-          ]}
-          borderRadius={10}
-          renderContent={renderContentCart}
-        />
-        <Animated.FlatList
-          bounces={true}
-          bouncesZoom={false}
-          contentContainerStyle={{
-            paddingBottom: 50
+        <View
+          style={{
+            zIndex: 1
           }}
-          keyExtractor={(item, index) => index + ''}
-          data={data.monans}
-          ListHeaderComponent={
-            <View>
-              <View
-                style={{
-                  width: Layout.screen.width,
-                  height: Layout.screen.height / 4,
-                  backgroundColor: 'pink'
-                }}
-              />
-              <Text>{data.tencuahang}</Text>
-              <Text>{data.dienthoai}</Text>
-              <Text>{data.email}</Text>
-              <Text>{data.thoigianphucvu}</Text>
-              <Text>{data.thoigiangiaohang}</Text>
-            </View>
-          }
-          renderItem={({ item, index }) => (
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                marginTop: 10
-              }}
-              key={item.mamonan}
-              onPress={() => {
-                sheetRefCofirm.current.snapTo(2);
-              }}
-            >
-              <View
-                style={{
-                  width: 90,
-                  height: 90,
-                  backgroundColor: 'pink'
-                }}
-              />
-              <View
-                style={{
-                  flex: 1
-                }}
-              >
-                <Text>{item.tenmonan}</Text>
+        >
+          <BottomSheet
+            ref={sheetRefCart}
+            snapPoints={[
+              0,
+              Dimensions.get('window').height / 2,
+              Dimensions.get('window').height / 1.3
+            ]}
+            borderRadius={10}
+            renderContent={renderContentCart}
+            zIndex={1}
+          />
+          <Animated.FlatList
+            bounces={true}
+            bouncesZoom={false}
+            contentContainerStyle={{
+              paddingBottom: 50
+            }}
+            keyExtractor={(item, index) => index + ''}
+            data={data.monans}
+            ListHeaderComponent={
+              <View>
                 <View
                   style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    flex: 1,
-                    alignItems: 'flex-end'
+                    width: Layout.screen.width,
+                    height: Layout.screen.height / 4,
+                    backgroundColor: 'pink'
+                  }}
+                />
+                <View
+                  style={{
+                    marginLeft: 10
                   }}
                 >
-                  <Text>{item.gia}</Text>
-                  <Text>+</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center"
+                    }}
+                  >
+                    <Ionicons
+                      name="md-shield-checkmark"
+                      size={26}
+                      color="#FF8C00"
+                      style={{
+                        marginRight: 4
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 26
+                      }}
+                    >{data.tencuahang}</Text>
+                  </View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      marginTop: 4
+                    }}
+                  >SĐT: {data.dienthoai}</Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      marginTop: 4
+                    }}
+                  >Email: {data.email}</Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      marginTop: 4
+                    }}
+                  >Thời gian phục vụ: {data.thoigianphucvu}</Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      marginTop: 4
+                    }}
+                  >Thời gian giao hàng: {data.thoigiangiaohang}</Text>
                 </View>
+                <View
+                  style={{
+                    width: "100%",
+                    backgroundColor: Color.GRAY3,
+                    height: 16,
+                    marginVertical: 10
+                  }}
+                />
               </View>
-            </TouchableOpacity>
-          )}
-        />
-        <View style={[styles.wrapTab]}>
+            }
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 10,
+                  paddingBottom: 20,
+                  borderBottomWidth: 1,
+                  borderBottomColor: Color.GRAY2
+                }}
+                key={item.mamonan}
+              >
+                <View
+                  style={{
+                    width: 90,
+                    height: 90,
+                    backgroundColor: 'pink'
+                  }}
+                />
+                <View
+                  style={{
+                    flex: 1,
+                    marginLeft: 16
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 22,
+                    }}
+                  >{item.tenmonan}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      flex: 1,
+                      alignItems: 'flex-end'
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 22,
+                        fontWeight: "500",
+                        fontFamily: 'Helvetica'
+                      }}
+                    >{item.gia}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setCurrentFood(item)
+                        sheetRefCofirm.current.snapTo(2);
+                      }}
+                    >
+                      <Ionicons
+                        name="add-circle"
+                        size={30}
+                        color={Color.Primary}
+                        style={{
+                          marginRight: 4
+                        }}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+        <TouchableOpacity
+          style={[styles.wrapTab]}
+          onPress={() => {
+            sheetRefCart.current.snapTo(2);
+          }}
+        >
           <View
             style={{
               flexDirection: 'row',
@@ -152,12 +428,12 @@ const Agent = (props) => {
                 backgroundColor: 'pink'
               }}
             />
-            <Text>GIA</Text>
+            <Text>{onCountTotalMoney(currentCart)}đ</Text>
           </View>
           <TouchableOpacity onPress={() => toCofirm()}>
             <Text>GIAO HANG</Text>
           </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -167,18 +443,19 @@ const styles = StyleSheet.create({
   wrapTab: {
     flexDirection: 'row',
     width: '100%',
-    overflow: 'hidden',
     backgroundColor: Color.Primary,
     position: 'absolute',
     bottom: 0,
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    zIndex: 5
   },
   groupWrapper: {
     backgroundColor: 'white',
-    height: 700,
-    borderRadius: 26,
-    overflow: 'hidden'
+    height: Dimensions.get('window').height / 1.3,
+    borderTopStartRadius: 26,
+    overflow: 'hidden',
+    zIndex: 1
   }
 });
 

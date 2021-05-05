@@ -36,7 +36,7 @@ import dataService from '../../network/dataService';
 import Layout from '../../constants/Layout';
 import moment from 'moment';
 import Color from '../../constants/Color';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 const LIMIT_DATA = 10;
@@ -189,8 +189,8 @@ const listShop = (props) => {
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <FlatList
         data={listShop}
-        onEndReachedThreshold={0.3}
-        onEndReached={loadMore}
+        // onEndReachedThreshold={0.3}
+        // onEndReached={loadMore}
         bounces={true}
         bouncesZoom={false}
         refreshControl={
@@ -202,35 +202,6 @@ const listShop = (props) => {
             tintColor={Color.Primary}
           />
         }
-        ListFooterComponent={
-          loading ?
-            <View>
-              {
-                [1, 2, 3, 4].map((item) =>
-                  <SkeletonPlaceholder key={item} >
-                    <SkeletonPlaceholder.Item
-                      width={"94%"}
-                      alignSelf={"center"}
-                      marginTop={20}
-                    >
-                      <SkeletonPlaceholder.Item width={400} height={20} borderRadius={10} marginVertical={5} />
-                      <SkeletonPlaceholder.Item width={300} height={20} borderRadius={10} />
-                      <SkeletonPlaceholder.Item width={200} height={20} borderRadius={10} marginVertical={5} />
-                      <SkeletonPlaceholder.Item width={250} height={20} borderRadius={10} />
-                      <SkeletonPlaceholder.Item width={200} height={20} borderRadius={10} marginVertical={5} alignSelf="flex-end" />
-                    </SkeletonPlaceholder.Item>
-                  </SkeletonPlaceholder>
-                )
-              }
-            </View>
-            : listShop.length > 0 ? (
-              <View
-                style={{ height: 40, width: "100%", alignItems: "center", justifyContent: "center" }}
-              >
-                <Text style={{ fontSize: 16, marginTop: 20 }}>- Hết -</Text>
-              </View>
-            ) : null
-        }
         ListEmptyComponent={
           (!loading || !refreshing) && (
             <View
@@ -241,11 +212,6 @@ const listShop = (props) => {
                 justifyContent: "center"
               }}
             >
-              <Icon
-                size={50}
-                name="list-alt"
-                color={Color.GRAY}
-              />
               <Text
                 style={{ fontSize: 18, marginTop: 10, color: Color.Primary, fontWeight: '700' }}
               >Danh sách rỗng</Text>
@@ -266,11 +232,44 @@ const listShop = (props) => {
                   backgroundColor: "pink"
                 }}
               />
-              <View>
-                <Text>{item.tencuahang}</Text>
-                <Text>{item.thoigianphucvu}</Text>
-                <Text>{item.thoigiangiaohang}</Text>
-                <Text>{item.dienthoai}</Text>
+              <View
+                style={{
+                  marginLeft: 10
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center"
+                  }}
+                >
+                  <Ionicons
+                    name="md-shield-checkmark"
+                    size={20}
+                    color="#FF8C00"
+                    style={{
+                      marginRight: 4
+                    }}
+                  />
+                  <Text
+                    style={{
+                      fontWeight: "600",
+                      fontSize: 24
+                    }}
+                  >{item.tencuahang}</Text>
+                </View>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    marginTop: 4
+                  }}
+                >Email: {item.email}</Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    marginTop: 4
+                  }}
+                >SĐT: {item.dienthoai}</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -286,11 +285,14 @@ const styles = StyleSheet.create({
 
   cardItemWrapper: {
     width: Layout.screen.width,
-    padding: 10,
-    borderRadius: 20,
+    marginVertical: 10,
+    paddingLeft: 10,
     alignSelf: "center",
     flexDirection: "row",
     backgroundColor: '#fff',
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: Color.GRAY2
 
   },
   cardItem: {

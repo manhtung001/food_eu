@@ -13,7 +13,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import {
   Alert,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Text
 } from 'react-native';
 import RootStack from './src/navigation/RootStack';
 import { Provider } from 'react-redux';
