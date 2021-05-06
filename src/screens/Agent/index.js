@@ -50,32 +50,38 @@ const Agent = (props) => {
     let tmp = currentCart;
     let tmp2 = tmp.map((item, index) => {
       if (item.mamonan == data.mamonan) {
-        if (status == "de" && item.soluong >= 2) item.soluong -= 1;
-        else if (status == "in") item.soluong += 1
+        if (status == 'de' && item.soluong >= 2) item.soluong -= 1;
+        else if (status == 'in') item.soluong += 1;
       }
-      return item
-    })
-    setCurrentCart(tmp2)
-  }
+      return item;
+    });
+    setCurrentCart(tmp2);
+  };
 
   const onCountTotalMoney = (data) => {
     let tmp = data;
     let total = 0;
-    tmp.length > 0 && tmp.forEach((item) => {
-      total += parseInt(item.gia) * item.soluong
-    })
+    tmp.length > 0 &&
+      tmp.forEach((item) => {
+        total += parseInt(item.gia) * item.soluong;
+      });
     return total;
-  }
+  };
 
   const renderContentCofirm = () => (
-    <View style={[styles.groupWrapper, {
-      justifyContent: "space-between"
-    }]}>
+    <View
+      style={[
+        styles.groupWrapper,
+        {
+          justifyContent: 'space-between'
+        }
+      ]}
+    >
       <View>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             paddingLeft: 10,
             paddingVertical: 10,
             backgroundColor: Color.GRAY3,
@@ -85,7 +91,7 @@ const Agent = (props) => {
           <TouchableOpacity
             onPress={() => {
               sheetRefCofirm.current.snapTo(0);
-              setCurrentFoodCount(1)
+              setCurrentFoodCount(1);
             }}
           >
             <Ionicons
@@ -99,27 +105,29 @@ const Agent = (props) => {
           <Text
             style={{
               fontSize: 22,
-              fontFamily: helpers.fonts("regular"),
+              fontFamily: helpers.fonts('regular')
             }}
-          >Thêm món mới</Text>
+          >
+            Thêm món mới
+          </Text>
           <View
             style={{
               width: 50,
-              height: 1,
+              height: 1
             }}
           />
         </View>
         <View
           style={{
-            flexDirection: "row",
-            width: "100%"
+            flexDirection: 'row',
+            width: '100%'
           }}
         >
           <View
             style={{
               width: 90,
               height: 90,
-              backgroundColor: "green",
+              backgroundColor: 'green',
               marginLeft: 10
             }}
           />
@@ -132,54 +140,56 @@ const Agent = (props) => {
             <Text
               style={{
                 fontSize: 24,
-                fontFamily: helpers.fonts("regular"),
+                fontFamily: helpers.fonts('regular')
               }}
-            >{currentFood.tenmonan}</Text>
+            >
+              {currentFood.tenmonan}
+            </Text>
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 flex: 1,
-                alignItems: "flex-end"
+                alignItems: 'flex-end'
               }}
             >
               <Text
                 style={{
                   fontSize: 22,
-                  fontFamily: helpers.fonts("regular"),
+                  fontFamily: helpers.fonts('regular')
                 }}
-              >{currentFood.gia}đ</Text>
+              >
+                {helpers.formatMoney(parseFloat(currentFood.gia))}đ
+              </Text>
               <View
                 style={{
-                  flexDirection: "row",
+                  flexDirection: 'row',
                   marginRight: 20,
-                  justifyContent: "space-between",
+                  justifyContent: 'space-between',
                   width: 120,
-                  alignItems: "center"
+                  alignItems: 'center'
                 }}
               >
                 <TouchableOpacity
                   onPress={() => {
                     let tmp = currentFoodCount;
-                    tmp >= 2 && setCurrentFoodCount(tmp -= 1)
+                    tmp >= 2 && setCurrentFoodCount((tmp -= 1));
                   }}
                 >
-                  <AntDesign
-                    name="minuscircle"
-                    size={30}
-                    color={Color.GRAY}
-                  />
+                  <AntDesign name="minuscircle" size={30} color={Color.GRAY} />
                 </TouchableOpacity>
                 <Text
                   style={{
                     fontSize: 22,
-                    fontFamily: helpers.fonts("regular"),
+                    fontFamily: helpers.fonts('regular')
                   }}
-                >{currentFoodCount}</Text>
+                >
+                  {currentFoodCount}
+                </Text>
                 <TouchableOpacity
                   onPress={() => {
                     let tmp = currentFoodCount;
-                    setCurrentFoodCount(tmp += 1)
+                    setCurrentFoodCount((tmp += 1));
                   }}
                 >
                   <AntDesign
@@ -192,34 +202,35 @@ const Agent = (props) => {
             </View>
           </View>
         </View>
-
       </View>
       <View
         style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           borderTopColor: Color.GRAY,
           borderTopWidth: 1,
           padding: 10,
-          alignItems: "center"
+          alignItems: 'center'
         }}
       >
         <Text
           style={{
             fontSize: 24,
-            fontFamily: helpers.fonts("bold"),
+            fontFamily: helpers.fonts('bold')
           }}
-        >{parseInt(currentFood.gia) * currentFoodCount}đ</Text>
+        >
+          {helpers.formatMoney(parseFloat(currentFood.gia) * currentFoodCount)}đ
+        </Text>
         <TouchableOpacity
           onPress={() => {
             let data = {
               ...currentFood,
               soluong: currentFoodCount
-            }
-            let tmp = currentCart
+            };
+            let tmp = currentCart;
             let tmp2 = tmp.concat(data);
             setCurrentCart(tmp2);
-            setCurrentFoodCount(1)
+            setCurrentFoodCount(1);
             sheetRefCofirm.current.snapTo(0);
           }}
           style={{
@@ -233,10 +244,12 @@ const Agent = (props) => {
           <Text
             style={{
               fontSize: 22,
-              fontFamily: helpers.fonts("regular"),
+              fontFamily: helpers.fonts('regular'),
               color: Color.Primary
             }}
-          >Thêm vào giỏ hàng</Text>
+          >
+            Thêm vào giỏ hàng
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -247,13 +260,13 @@ const Agent = (props) => {
       <View style={styles.groupWrapper}>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             paddingLeft: 10,
             paddingVertical: 10,
             backgroundColor: Color.GRAY3,
             marginBottom: 30,
-            alignItems: "center"
+            alignItems: 'center'
           }}
         >
           <TouchableOpacity
@@ -272,27 +285,31 @@ const Agent = (props) => {
           <Text
             style={{
               fontSize: 22,
-              fontFamily: helpers.fonts("regular"),
+              fontFamily: helpers.fonts('regular')
             }}
-          >Giỏ hàng</Text>
+          >
+            Giỏ hàng
+          </Text>
           <TouchableOpacity
             onPress={() => {
               helpers.showComfirm({
-                title: "Xoá tất cả món",
-                content: "Bạn có muốn xoá tất cả món trong giỏ hàng?",
+                title: 'Xoá tất cả món',
+                content: 'Bạn có muốn xoá tất cả món trong giỏ hàng?',
                 onOk: () => setCurrentCart([]),
-                textOk: "Xoá tất cả"
-              })
+                textOk: 'Xoá tất cả'
+              });
             }}
           >
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: helpers.fonts("regular"),
+                fontFamily: helpers.fonts('regular'),
                 color: Color.Primary,
                 marginRight: 10
               }}
-            >Xoá hết</Text>
+            >
+              Xoá hết
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -302,9 +319,9 @@ const Agent = (props) => {
               <View
                 key={index}
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                   marginBottom: 30,
                   paddingLeft: 10,
                   borderBottomWidth: 1,
@@ -316,28 +333,32 @@ const Agent = (props) => {
                   <Text
                     style={{
                       fontSize: 20,
-                      fontFamily: helpers.fonts(),
+                      fontFamily: helpers.fonts()
                     }}
-                  >{item.tenmonan}</Text>
+                  >
+                    {item.tenmonan}
+                  </Text>
                   <Text
                     style={{
                       fontSize: 20,
-                      fontFamily: helpers.fonts(),
+                      fontFamily: helpers.fonts()
                     }}
-                  >{item.gia}đ</Text>
+                  >
+                    {helpers.formatMoney(parseFloat(item.gia))}đ
+                  </Text>
                 </View>
                 <View
                   style={{
-                    flexDirection: "row",
+                    flexDirection: 'row',
                     marginRight: 20,
-                    justifyContent: "space-between",
+                    justifyContent: 'space-between',
                     width: 100,
-                    alignItems: "center"
+                    alignItems: 'center'
                   }}
                 >
                   <TouchableOpacity
                     onPress={() => {
-                      onChangeCount("de", item)
+                      onChangeCount('de', item);
                     }}
                   >
                     <AntDesign
@@ -349,12 +370,14 @@ const Agent = (props) => {
                   <Text
                     style={{
                       fontSize: 22,
-                      fontFamily: helpers.fonts("regular"),
+                      fontFamily: helpers.fonts('regular')
                     }}
-                  >{item.soluong}</Text>
+                  >
+                    {item.soluong}
+                  </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      onChangeCount("in", item)
+                      onChangeCount('in', item);
                     }}
                   >
                     <AntDesign
@@ -369,7 +392,7 @@ const Agent = (props) => {
           })}
         </ScrollView>
       </View>
-    )
+    );
   };
 
   return (
@@ -377,10 +400,7 @@ const Agent = (props) => {
       <View>
         <BottomSheet
           ref={sheetRefCofirm}
-          snapPoints={[
-            0,
-            Dimensions.get('window').height / 1.05
-          ]}
+          snapPoints={[0, Dimensions.get('window').height / 1.05]}
           borderRadius={10}
           renderContent={renderContentCofirm}
           zIndex={1}
@@ -392,10 +412,7 @@ const Agent = (props) => {
         >
           <BottomSheet
             ref={sheetRefCart}
-            snapPoints={[
-              0,
-              Dimensions.get('window').height / 1.05
-            ]}
+            snapPoints={[0, Dimensions.get('window').height / 1.05]}
             borderRadius={10}
             renderContent={renderContentCart}
             zIndex={1}
@@ -409,7 +426,7 @@ const Agent = (props) => {
             ListFooterComponent={
               <View
                 style={{
-                  width: "100%",
+                  width: '100%',
                   height: 50
                 }}
               />
@@ -432,8 +449,8 @@ const Agent = (props) => {
                 >
                   <View
                     style={{
-                      flexDirection: "row",
-                      alignItems: "center"
+                      flexDirection: 'row',
+                      alignItems: 'center'
                     }}
                   >
                     <Ionicons
@@ -447,9 +464,11 @@ const Agent = (props) => {
                     <Text
                       style={{
                         fontSize: 26,
-                        fontFamily: helpers.fonts("bold")
+                        fontFamily: helpers.fonts('bold')
                       }}
-                    >{data.tencuahang}</Text>
+                    >
+                      {data.tencuahang}
+                    </Text>
                   </View>
                   <Text
                     style={{
@@ -457,32 +476,40 @@ const Agent = (props) => {
                       marginTop: 4,
                       fontFamily: helpers.fonts()
                     }}
-                  >SĐT: {data.dienthoai}</Text>
+                  >
+                    SĐT: {data.dienthoai}
+                  </Text>
                   <Text
                     style={{
                       fontSize: 18,
                       marginTop: 4,
                       fontFamily: helpers.fonts()
                     }}
-                  >Email: {data.email}</Text>
+                  >
+                    Email: {data.email}
+                  </Text>
                   <Text
                     style={{
                       fontSize: 18,
                       marginTop: 4,
                       fontFamily: helpers.fonts()
                     }}
-                  >Thời gian phục vụ: {data.thoigianphucvu}</Text>
+                  >
+                    Thời gian phục vụ: {data.thoigianphucvu}
+                  </Text>
                   <Text
                     style={{
                       fontSize: 18,
                       marginTop: 4,
                       fontFamily: helpers.fonts()
                     }}
-                  >Thời gian giao hàng: {data.thoigiangiaohang}</Text>
+                  >
+                    Thời gian giao hàng: {data.thoigiangiaohang}
+                  </Text>
                 </View>
                 <View
                   style={{
-                    width: "100%",
+                    width: '100%',
                     backgroundColor: Color.GRAY3,
                     height: 16,
                     marginVertical: 10
@@ -517,9 +544,11 @@ const Agent = (props) => {
                   <Text
                     style={{
                       fontSize: 22,
-                      fontFamily: helpers.fonts("regular")
+                      fontFamily: helpers.fonts('regular')
                     }}
-                  >{item.tenmonan}</Text>
+                  >
+                    {item.tenmonan}
+                  </Text>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -531,12 +560,14 @@ const Agent = (props) => {
                     <Text
                       style={{
                         fontSize: 22,
-                        fontFamily: helpers.fonts("regular")
+                        fontFamily: helpers.fonts('regular')
                       }}
-                    >{item.gia}đ</Text>
+                    >
+                      {helpers.formatMoney(parseFloat(item.gia))}đ
+                    </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        setCurrentFood(item)
+                        setCurrentFood(item);
                         sheetRefCofirm.current.snapTo(2);
                       }}
                     >
@@ -573,16 +604,18 @@ const Agent = (props) => {
               size={50}
               color={Color.Primary}
               style={{
-                marginRight: 4,
+                marginRight: 4
               }}
             />
             <Text
               style={{
                 fontSize: 26,
-                fontFamily: helpers.fonts("bold"),
+                fontFamily: helpers.fonts('bold'),
                 marginLeft: 6
               }}
-            >{onCountTotalMoney(currentCart)}đ</Text>
+            >
+              {helpers.formatMoney(onCountTotalMoney(currentCart))}đ
+            </Text>
           </View>
           <TouchableOpacity
             style={{
@@ -590,19 +623,22 @@ const Agent = (props) => {
               paddingHorizontal: 14,
               paddingVertical: 10,
               borderRadius: 30,
-              alignItems: "center",
-              justifyContent: "center",
+              alignItems: 'center',
+              justifyContent: 'center',
               marginVertical: 8
             }}
-            onPress={() => toCofirm()}>
+            onPress={() => toCofirm()}
+          >
             <Text
               style={{
                 fontSize: 18,
-                fontFamily: helpers.fonts("regular"),
+                fontFamily: helpers.fonts('regular'),
                 color: Color.WHITE,
                 marginHorizontal: 10
               }}
-            >Giao hàng</Text>
+            >
+              Giao hàng
+            </Text>
           </TouchableOpacity>
         </TouchableOpacity>
       </View>

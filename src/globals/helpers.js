@@ -2,6 +2,8 @@ import dataService from './../network/dataService';
 import { Linking } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import 'intl';
+import 'intl/locale-data/jsonp/vi';
 
 let store = null;
 const helpers = {
@@ -17,7 +19,7 @@ const helpers = {
       content: content,
       title,
       funcMsg: callBack,
-      nameClose,
+      nameClose
     });
   },
   hideModal: () => {
@@ -30,7 +32,7 @@ const helpers = {
     textCancer,
     onOk,
     onCancer,
-    confirmImgUrl,
+    confirmImgUrl
   }) => {
     store.dispatch({
       type: 'SHOW_CONFIRM',
@@ -40,7 +42,7 @@ const helpers = {
       textCancer,
       onOk,
       onCancer,
-      confirmImgUrl,
+      confirmImgUrl
     });
   },
 
@@ -72,25 +74,29 @@ const helpers = {
       default:
         fontFamily = 'iCielVAGRoundedNext-Light';
     }
-    return fontFamily
+    return fontFamily;
+  },
+  formatMoney: (money) => {
+    var formatter = new Intl.NumberFormat('vi-VI');
+    return formatter.format(money);
   },
   refreshToken: async () => {
     let token = null;
     try {
       token = await AsyncStorage.getItem('token');
-      console.log("[refreshToken] true: ", token)
+      console.log('[refreshToken] true: ', token);
     } catch (e) {
-      console.log("[refreshToken]: ", e)
+      console.log('[refreshToken]: ', e);
     }
     let result = await dataService.refreshToken({}, token);
     if (result.code == 0) {
       store.dispatch({
         type: 'SET_USER_INFO',
-        data: result.data.shipperInfo,
+        data: result.data.shipperInfo
       });
       store.dispatch({
         type: 'SET_TOKEN',
-        data: result.data.token,
+        data: result.data.token
       });
       await AsyncStorage.setItem('token', result.data.token);
     }
@@ -101,11 +107,11 @@ const helpers = {
     if (result.code == 0) {
       store.dispatch({
         type: 'SET_USER_INFO',
-        data: result.data.shipperInfo,
+        data: result.data.shipperInfo
       });
       store.dispatch({
         type: 'SET_TOKEN',
-        data: result.data.token,
+        data: result.data.token
       });
       await AsyncStorage.setItem('token', result.data.token);
     }
