@@ -17,7 +17,6 @@ import Color from '../../constants/Color';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const Profile = (props) => {
-
   const logout = () => {
     helpers.showComfirm({
       title: 'Thông báo',
@@ -26,34 +25,34 @@ const Profile = (props) => {
       textCancer: 'Huỷ',
       onOk: () => {
         helpers.clearUser();
-        props.navigation.replace('LoginScreen')
+        props.navigation.replace('LoginScreen');
       }
-    })
-
-  }
+    });
+  };
   return (
-    <View style={{
-      flex: 1,
-      backgroundColor: '#fff',
-    }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#fff'
+      }}
+    >
       <View
         style={{
           flex: 1,
-          backgroundColor: Color.Primary,
+          backgroundColor: Color.Primary
         }}
       />
       <View
         style={{
           flex: 5,
-          backgroundColor: '#fff',
+          backgroundColor: '#fff'
         }}
       >
-        <View
-          style={styles.avatar}
-        >
+        <View style={styles.avatar}>
           <Image
             source={{
-              uri: 'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
+              uri:
+                'https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png'
             }}
             style={{
               width: 120,
@@ -63,7 +62,7 @@ const Profile = (props) => {
           />
           <View
             style={{
-              justifyContent: "center",
+              justifyContent: 'center',
               borderLeftColor: Color.PLACEHOLDER,
               borderLeftWidth: 2,
               paddingLeft: 20
@@ -74,83 +73,88 @@ const Profile = (props) => {
                 fontSize: 24,
                 marginBottom: 10
               }}
-            >{props.userInfo.name}</Text>
-            <View style={{ flexDirection: 'row' }} >
-              <Icon
-                size={24}
-                name="phone"
-                color={Color.Primary}
-              />
+            >
+              {props.userInfo.name}
+            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Icon size={24} name="phone" color={Color.Primary} />
               <Text
                 style={{
                   fontSize: 18,
                   fontWeight: 'bold',
                   marginLeft: 5
                 }}
-              >{props.userInfo.phone}</Text>
+              >
+                {props.userInfo.phone}
+              </Text>
             </View>
           </View>
         </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('History');
+            }}
+          >
+            <Text>History</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
-
-
       <TouchableOpacity
         style={{
-          width: "60%",
+          width: '60%',
           borderRadius: 20,
           backgroundColor: Color.Primary,
-          shadowColor: "#000",
+          shadowColor: '#000',
           shadowOffset: {
             width: 0,
-            height: 3,
+            height: 3
           },
           shadowOpacity: 0.29,
           shadowRadius: 4.65,
           elevation: 7,
           padding: 20,
-          alignSelf: "center",
-          alignItems: "center",
-          justifyContent: "center",
+          alignSelf: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
           marginVertical: 20,
-          flexDirection: "row"
+          flexDirection: 'row'
         }}
         onPress={() => logout()}
       >
-        <Icon
-          size={24}
-          name="logout"
-          color={Color.WHITE}
-        />
+        <Icon size={24} name="logout" color={Color.WHITE} />
 
-        <Text style={{ color: "white", fontSize: 18, marginLeft: 20 }} >Đăng xuất</Text>
+        <Text style={{ color: 'white', fontSize: 18, marginLeft: 20 }}>
+          Đăng xuất
+        </Text>
       </TouchableOpacity>
     </View>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
   avatar: {
     marginTop: -50,
     borderRadius: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     elevation: 10,
     marginHorizontal: 10,
     padding: 20,
-    flexDirection: "row",
-    shadowColor: "#000",
+    flexDirection: 'row',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 3
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
-    elevation: 7,
-  },
+    elevation: 7
+  }
 });
 
-
-const mapStateToProps = state => ({ userInfo: state.userState?.user, token: state.userState?.token })
+const mapStateToProps = (state) => ({
+  userInfo: state.userState?.user,
+  token: state.userState?.token
+});
 
 export default connect(mapStateToProps)(Profile);
