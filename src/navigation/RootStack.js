@@ -7,13 +7,7 @@
  */
 
 import React, { useState } from 'react';
-import {
-  LoginScreen,
-  Agent,
-  SearchScreen,
-  Cofirm,
-  History
-} from '../screens/index';
+import { LoginScreen, Agent, SearchScreen, Cofirm } from '../screens/index';
 import RootTab from './RootTab';
 import { createStackNavigator } from '@react-navigation/stack';
 import helpers from '../globals/helpers';
@@ -31,7 +25,6 @@ const RootStack = () => {
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="RootTab" component={RootTab} />
       <Stack.Screen name="Agent" component={Agent} />
-      <Stack.Screen name="History" component={History} />
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name="Cofirm" component={Cofirm} />
     </Stack.Navigator>

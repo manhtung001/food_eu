@@ -5,8 +5,8 @@ export { default as History } from './History';
 
 //TABSCREEN
 export { default as listShop } from './TabScreen/listShop';
+export { default as listFood } from './TabScreen/listFood';
 
-export { default as OrderDetailScreen } from './OrderScreen/OrderDetailScreen';
 export { default as OrderScreen } from './OrderScreen/OrderScreen';
 
 export { default as Agent } from './Agent';

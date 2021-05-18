@@ -90,15 +90,6 @@ const Profile = (props) => {
             </View>
           </View>
         </View>
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate('History');
-            }}
-          >
-            <Text>History</Text>
-          </TouchableOpacity>
-        </View>
       </View>
       <TouchableOpacity
         style={{

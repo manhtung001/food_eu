@@ -19,6 +19,7 @@ import {
 
 import {
   listShop,
+  listFood,
   Profile,
   NotificationScreen,
   OrderScreen
@@ -34,22 +35,20 @@ const TopTab = createMaterialTopTabNavigator();
 
 const TopTabScreen = (props) => {
   const toSearch = () => {
-    props.navigation.navigate("SearchScreen")
-  }
+    props.navigation.navigate('SearchScreen');
+  };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <Text>Giao hang den:</Text>
-      <TouchableOpacity
-        onPress={() => toSearch()}
-      >
+      <TouchableOpacity onPress={() => toSearch()}>
         <View
           style={{
-            width: "96%",
-            alignSelf: "center",
+            width: '96%',
+            alignSelf: 'center',
             backgroundColor: Color.GRAY3,
             borderRadius: 20,
             padding: 10,
-            flexDirection: "row"
+            flexDirection: 'row'
           }}
         >
           <FontAwesome
@@ -66,29 +65,25 @@ const TopTabScreen = (props) => {
               color: Color.GRAY,
               marginLeft: 10
             }}
-          >Tìm kiếm</Text>
+          >
+            Tìm kiếm
+          </Text>
         </View>
       </TouchableOpacity>
       <TopTab.Navigator
         tabBarOptions={{
           activeTintColor: Color.Primary,
           inactiveTintColor: Color.GRAY,
-          indicatorStyle: { backgroundColor: Color.Primary },
-          scrollEnabled: true
+          indicatorStyle: { backgroundColor: Color.Primary }
         }}
         lazy={true}
-        swipeEnabled={true}
-
       >
-        <TopTab.Screen name="Gan toi" component={listShop} />
-        <TopTab.Screen name="ban chay" component={listShop} />
-        <TopTab.Screen name="danh gia" component={listShop} />
-        <TopTab.Screen name="more" component={listShop} />
+        <TopTab.Screen name="DS cua hang" component={listShop} />
+        <TopTab.Screen name="mon an theo loai" component={listFood} />
       </TopTab.Navigator>
     </SafeAreaView>
   );
-}
-
+};
 
 const RootTab = ({ route }) => {
   return (
@@ -97,7 +92,7 @@ const RootTab = ({ route }) => {
         initialRouteName="TopTabScreen"
         tabBarOptions={{
           activeTintColor: Color.Primary,
-          inactiveTintColor: Color.GRAY,
+          inactiveTintColor: Color.GRAY
         }}
       >
         <BottomTab.Screen
@@ -113,7 +108,7 @@ const RootTab = ({ route }) => {
                 />
               </View>
             ),
-            tabBarLabel: 'Trang chủ',
+            tabBarLabel: 'Trang chủ'
           }}
         />
         <BottomTab.Screen
@@ -129,7 +124,7 @@ const RootTab = ({ route }) => {
                 />
               </View>
             ),
-            tabBarLabel: 'Đơn hàng',
+            tabBarLabel: 'Đơn hàng'
           }}
         />
         <BottomTab.Screen
@@ -143,7 +138,7 @@ const RootTab = ({ route }) => {
                 name="bell"
               />
             ),
-            tabBarLabel: 'Thông báo',
+            tabBarLabel: 'Thông báo'
           }}
         />
         <BottomTab.Screen
@@ -157,14 +152,12 @@ const RootTab = ({ route }) => {
                 name="user-circle"
               />
             ),
-            tabBarLabel: 'Cá nhân',
+            tabBarLabel: 'Cá nhân'
           }}
         />
       </BottomTab.Navigator>
-
     </View>
   );
-}
-
+};
 
 export default RootTab;

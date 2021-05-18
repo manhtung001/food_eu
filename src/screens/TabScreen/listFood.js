@@ -44,20 +44,96 @@ const LIMIT_DATA = 10;
 let LOADING = true;
 let CAN_LOAD_MORE = true;
 
+const DATA_TEST = [
+  {
+    khuvuc: 123105,
+    monans: [
+      {
+        cuahang: 6,
+        loaimonan: 3,
+        mamonan: 4,
+        hinhanh: null,
+        gia: 35000,
+        tenmonan: 'Trà sữa hoàng kim'
+      },
+      {
+        cuahang: 6,
+        loaimonan: 4,
+        mamonan: 5,
+        hinhanh: null,
+        gia: 3000,
+        tenmonan: 'a'
+      },
+      {
+        cuahang: 6,
+        loaimonan: 1,
+        mamonan: 2,
+        hinhanh: null,
+        gia: 5000,
+        tenmonan: 'b'
+      },
+      {
+        cuahang: 6,
+        loaimonan: 10,
+        mamonan: 11,
+        hinhanh: null,
+        gia: 350000,
+        tenmonan: 'csd'
+      },
+      {
+        cuahang: 6,
+        loaimonan: 12,
+        mamonan: 12,
+        hinhanh: null,
+        gia: 3000,
+        tenmonan: 'sadas'
+      },
+      {
+        cuahang: 6,
+        loaimonan: 14,
+        mamonan: 15,
+        hinhanh: null,
+        gia: 5000,
+        tenmonan: 'asd'
+      }
+    ],
+    thoigiangiaohang: '08:30:00',
+    macuahang: 6,
+    matkhau: 'ABC',
+    tencuahang: 'ABC',
+    email: 'ABC@gmail.com',
+    thoigianphucvu: '08:30:00',
+    dienthoai: '0948787324',
+    hinhanh: ''
+  },
+  {
+    khuvuc: 123,
+    monans: [],
+    thoigiangiaohang: '08:30:00',
+    macuahang: 7,
+    matkhau: 'ABC',
+    tencuahang: 'abbc',
+    email: 'ABC@gmail.com',
+    thoigianphucvu: '08:30:00',
+    dienthoai: '0948787324',
+    hinhanh: ''
+  }
+];
+
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 }
 
-const listShop = (props) => {
+const listFood = (props) => {
   useEffect(() => {
     props.navigation.addListener('focus', () => {
       onRefresh();
     });
   }, []);
 
-  const [listShop, setListShop] = useState([]);
+  const [listFood, setListFood] = useState(DATA_TEST);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -66,31 +142,33 @@ const listShop = (props) => {
     setLoading(stt);
   };
 
-  const getListShop = async () => {
+  const getListFood = async () => {
     toggleLoading(true);
-    let res = await dataService.getListShop();
+    let res = await dataService.getListFood();
     toggleLoading(false);
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     if (!res || res.length == 0) return;
-    setListShop(res);
+    console.log('getListFood');
+    console.log(res);
+    // setListFood(res.data.orderInfos);
   };
 
   const onRefresh = async () => {
     LOADING = true;
-    setListShop([]);
+    setListFood([]);
     setRefreshing(true);
-    await getListShop();
+    await getListFood();
     setRefreshing(false);
   };
 
   const toOrderDetail = async (item) => {
-    // props.navigation.navigate('Agent', { data: item });
+    props.navigation.navigate('Agent', { data: item });
   };
 
   return (
     <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <FlatList
-        data={listShop}
+        data={listFood}
         bounces={true}
         bouncesZoom={false}
         refreshControl={
@@ -160,26 +238,17 @@ const listShop = (props) => {
                   />
                   <Text
                     style={{
-                      fontSize: 22,
+                      fontSize: 24,
                       marginTop: 4,
                       fontFamily: helpers.fonts('regular')
                     }}
                   >
-                    {item.name}
+                    {item.tencuahang}
                   </Text>
                 </View>
                 <Text
                   style={{
-                    fontSize: 15,
-                    marginTop: 4,
-                    fontFamily: helpers.fonts()
-                  }}
-                >
-                  Địa chỉ: {item.areaName}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 15,
+                    fontSize: 16,
                     marginTop: 4,
                     fontFamily: helpers.fonts()
                   }}
@@ -188,12 +257,12 @@ const listShop = (props) => {
                 </Text>
                 <Text
                   style={{
-                    fontSize: 15,
+                    fontSize: 16,
                     marginTop: 4,
                     fontFamily: helpers.fonts()
                   }}
                 >
-                  SĐT: {item.phoneNumber}
+                  SĐT: {item.dienthoai}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -224,4 +293,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default listShop;
+export default listFood;

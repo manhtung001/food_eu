@@ -7,12 +7,12 @@
  */
 
 /**
-* Sample React Native App
-* https://github.com/facebook/react-native
-*
-* @format
-* @flow strict-local
-*/
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
 
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
@@ -37,7 +37,7 @@ import moment from 'moment';
 import Color from './../../constants/Color';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import helpers from '../../globals/helpers';
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const LIMIT_DATA = 10;
 let LOADING = true;
@@ -50,7 +50,6 @@ if (Platform.OS === 'android') {
 }
 
 const NotificationScreen = (props) => {
-
   useEffect(() => {
     props.navigation.addListener('focus', () => {
       onRefresh();
@@ -79,14 +78,14 @@ const NotificationScreen = (props) => {
       CAN_LOAD_MORE = false;
     }
     setListNoti(res.data);
-  }
+  };
 
   const onRefresh = async () => {
     CAN_LOAD_MORE = true;
     LOADING = true;
     setListNoti([]);
     setRefreshing(true);
-    await getListNoti();
+    // await getListNoti();
     setRefreshing(false);
   };
 
@@ -103,7 +102,7 @@ const NotificationScreen = (props) => {
       CAN_LOAD_MORE = false;
     }
     setListNoti(listNoti.concat(res.data));
-  }
+  };
 
   const updateAllIsRead = async () => {
     let res = await dataService.updateNotiAllIsRead({});
@@ -111,7 +110,7 @@ const NotificationScreen = (props) => {
       getListNoti();
       setListNoti(res.data);
     }
-  }
+  };
 
   const updateIsRead = async (id) => {
     let res = await dataService.updateNotiIsRead({
@@ -121,11 +120,10 @@ const NotificationScreen = (props) => {
       getListNoti();
       setListNoti(res.data);
     }
-  }
-
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View>
         <FlatList
           data={listNoti}
@@ -143,47 +141,59 @@ const NotificationScreen = (props) => {
             />
           }
           ListHeaderComponent={
-            listNoti?.length > 0 &&
-            <TouchableOpacity
-              style={styles.headerFlat}
-              onPress={() => updateAllIsRead()}
-            >
-              <Icon
-                size={24}
-                name="check"
-                color={Color.Primary}
-              />
-              <Text
-                style={styles.textHeader}
-              >Đánh dấu tất cả đã đọc</Text>
-            </TouchableOpacity>
+            listNoti?.length > 0 && (
+              <TouchableOpacity
+                style={styles.headerFlat}
+                onPress={() => updateAllIsRead()}
+              >
+                <Icon size={24} name="check" color={Color.Primary} />
+                <Text style={styles.textHeader}>Đánh dấu tất cả đã đọc</Text>
+              </TouchableOpacity>
+            )
           }
-
           ListFooterComponent={
-            loading ?
+            loading ? (
               <View>
-                {
-                  [1, 2, 3, 4, 5, 6, 7].map((item) =>
-                    <SkeletonPlaceholder key={item} >
+                {[1, 2, 3, 4, 5, 6, 7].map((item) => (
+                  <SkeletonPlaceholder key={item}>
+                    <SkeletonPlaceholder.Item
+                      width={'94%'}
+                      alignSelf={'center'}
+                    >
                       <SkeletonPlaceholder.Item
-                        width={"94%"}
-                        alignSelf={"center"}
-                      >
-                        <SkeletonPlaceholder.Item width={100} height={26} borderRadius={10} marginVertical={5} />
-                        <SkeletonPlaceholder.Item width={300} height={26} borderRadius={10} />
-                        <SkeletonPlaceholder.Item width={200} height={26} borderRadius={10} marginVertical={5} alignSelf="flex-end" />
-                      </SkeletonPlaceholder.Item>
-                    </SkeletonPlaceholder>
-                  )
-                }
+                        width={100}
+                        height={26}
+                        borderRadius={10}
+                        marginVertical={5}
+                      />
+                      <SkeletonPlaceholder.Item
+                        width={300}
+                        height={26}
+                        borderRadius={10}
+                      />
+                      <SkeletonPlaceholder.Item
+                        width={200}
+                        height={26}
+                        borderRadius={10}
+                        marginVertical={5}
+                        alignSelf="flex-end"
+                      />
+                    </SkeletonPlaceholder.Item>
+                  </SkeletonPlaceholder>
+                ))}
               </View>
-              : listNoti?.length > 0 ? (
-                <View
-                  style={{ height: 40, width: "100%", alignItems: "center", justifyContent: "center" }}
-                >
-                  <Text style={{ fontSize: 16 }}>- Hết -</Text>
-                </View>
-              ) : null
+            ) : listNoti?.length > 0 ? (
+              <View
+                style={{
+                  height: 40,
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Text style={{ fontSize: 16 }}>- Hết -</Text>
+              </View>
+            ) : null
           }
           ListEmptyComponent={
             (!loading || !refreshing) && (
@@ -191,40 +201,48 @@ const NotificationScreen = (props) => {
                 style={{
                   height: Layout.window.height,
                   width: '100%',
-                  alignItems: "center",
-                  justifyContent: "center"
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
-                <Icon
-                  size={50}
-                  name="list-alt"
-                  color={Color.GRAY}
-                />
+                <Icon size={50} name="list-alt" color={Color.GRAY} />
                 <Text
-                  style={{ fontSize: 18, marginTop: 10, color: Color.Primary, fontWeight: '700' }}
-                >Danh sách rỗng</Text>
+                  style={{
+                    fontSize: 18,
+                    marginTop: 10,
+                    color: Color.Primary,
+                    fontWeight: '700'
+                  }}
+                >
+                  Danh sách rỗng
+                </Text>
               </View>
             )
           }
           keyExtractor={(item, index) => index + ''}
-          renderItem={({ item, index }) =>
+          renderItem={({ item, index }) => (
             <TouchableOpacity
-              style={[styles.cardItem, { backgroundColor: item.isRead == "0" ? Color.GRAY : Color.GRAY3 }]}
+              style={[
+                styles.cardItem,
+                {
+                  backgroundColor: item.isRead == '0' ? Color.GRAY : Color.GRAY3
+                }
+              ]}
               onPress={() => updateIsRead(item.id)}
-              disabled={item.isRead == "1"}
+              disabled={item.isRead == '1'}
             >
               <Text style={styles.titleNoti}>{item.title}</Text>
               <Text style={styles.bodyNoti}>{item.body}</Text>
-              <Text style={styles.createDate}>{moment(item.createdAt).format("DD/MM/YYYY - hh:mm:ss")}</Text>
+              <Text style={styles.createDate}>
+                {moment(item.createdAt).format('DD/MM/YYYY - hh:mm:ss')}
+              </Text>
             </TouchableOpacity>
-          }
-        >
-        </FlatList>
+          )}
+        ></FlatList>
       </View>
     </SafeAreaView>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
   cardItem: {
@@ -234,32 +252,29 @@ const styles = StyleSheet.create({
   },
   titleNoti: {
     fontSize: 18,
-    fontWeight: "700"
+    fontWeight: '700'
   },
   bodyNoti: {
-    fontSize: 16,
+    fontSize: 16
   },
   createDate: {
     fontSize: 14,
-    fontWeight: "400",
-    alignSelf: "flex-end",
+    fontWeight: '400',
+    alignSelf: 'flex-end',
     marginRight: 10
   },
   headerFlat: {
     height: 60,
     width: '100%',
-    justifyContent: "flex-end",
-    alignItems: "center",
-    flexDirection: "row"
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   textHeader: {
     fontSize: 18,
     color: Color.Primary,
     marginHorizontal: 10
   }
-
 });
-
-
 
 export default NotificationScreen;
