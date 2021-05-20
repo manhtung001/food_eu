@@ -2,8 +2,9 @@ let initialState = {
   token: null,
   loading: false,
   user: {
-    notifications: 0,
+    notifications: 0
   },
+  cart: []
 };
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -11,16 +12,20 @@ const userReducer = (state = initialState, action) => {
       return { ...state, user: { ...state.user, ...action.edit } };
     case 'SET_USER_INFO':
       return Object.assign({}, state, {
-        user: action.data,
+        user: action.data
+      });
+    case 'UPDATE_CART':
+      return Object.assign({}, state, {
+        cart: action.data
       });
     case 'SET_TOKEN':
       return Object.assign({}, state, {
-        token: action.data,
+        token: action.data
       });
     case 'DECREASE_NOTIFICATION':
       return {
         ...state,
-        user: { ...state.user, notifications: state.user.notifications - 1 },
+        user: { ...state.user, notifications: state.user.notifications - 1 }
       };
     case 'INCREASE_NOTIFICATION':
       return { ...state, notifications: state.user.notifications + 1 };

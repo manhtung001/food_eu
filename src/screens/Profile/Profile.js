@@ -76,6 +76,22 @@ const Profile = (props) => {
             >
               {props.userInfo?.name}
             </Text>
+            <Text
+              style={{
+                fontSize: 18,
+                marginBottom: 10
+              }}
+            >
+              Tên đăng nhập: {props.userInfo?.username}
+            </Text>
+            <Text
+              style={{
+                fontSize: 18,
+                marginBottom: 10
+              }}
+            >
+              Email: {props.userInfo?.email}
+            </Text>
             <View style={{ flexDirection: 'row' }}>
               <Icon size={24} name="phone" color={Color.Primary} />
               <Text
@@ -85,8 +101,7 @@ const Profile = (props) => {
                   marginLeft: 5
                 }}
               >
-                {/* {props.userInfo.phone} */}
-                {props.token}
+                {props.userInfo.phoneNumber}
               </Text>
             </View>
           </View>

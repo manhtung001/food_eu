@@ -41,16 +41,20 @@ const Agent = (props) => {
   const [infoShop, setInfoShop] = useState([]);
   let [currentFoodCount, setCurrentFoodCount] = useState(1);
 
-  const [currentCart, setCurrentCart] = useState([]);
+  const [currentCart, setCurrentCart] = useState(props.cart);
   const { data } = props.route.params;
 
   const toCofirm = () => {
-    props.navigation.navigate('Cofirm', { data: currentCart });
+    props.navigation.navigate('Cofirm');
   };
 
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    setCurrentCart(props.cart);
+  }, [props.cart]);
 
   const getData = async () => {
     helpers.showLoading();
@@ -65,13 +69,23 @@ const Agent = (props) => {
   const onChangeCount = (status, data) => {
     let tmp = currentCart;
     let tmp2 = tmp.map((item, index) => {
-      if (item.mamonan == data.mamonan) {
-        if (status == 'de' && item.soluong >= 2) item.soluong -= 1;
-        else if (status == 'in') item.soluong += 1;
+      if (item.idShop == data.idShop && item.id == data.id) {
+        if (status == 'de' && item.count >= 2) item.count -= 1;
+        // else if (status == 'de' && item.count == 1) {
+        //   helpers.showComfirm({
+        //     content: `Bạn có chắc chắn muốn xoá ${item.productName} của cửa hàng ${item.shopName} ra khỏi giỏ hàng?`,
+        //     onOk: () => {
+        //       item.count -= 1;
+        //     }
+        //   });
+        // }
+        else if (status == 'in') item.count += 1;
       }
       return item;
     });
-    setCurrentCart(tmp2);
+    console.log(' helpers.setCurrentCart(tmp2);');
+    console.log(tmp2);
+    helpers.setCurrentCart(tmp2);
   };
 
   const onCountTotalMoney = (data) => {
@@ -79,7 +93,7 @@ const Agent = (props) => {
     let total = 0;
     tmp.length > 0 &&
       tmp.forEach((item) => {
-        total += parseInt(item.price) * item.soluong;
+        total += parseInt(item.price) * item.count;
       });
     return total;
   };
@@ -244,13 +258,10 @@ const Agent = (props) => {
           onPress={() => {
             let data = {
               ...currentFood,
-              soluong: currentFoodCount
+              idShop: infoShop.idShop,
+              count: currentFoodCount
             };
-            let tmp = currentCart;
-            let tmp2 = tmp.concat(data);
-            setCurrentCart(tmp2);
-            setCurrentFoodCount(1);
-            sheetRefCofirm.current.snapTo(0);
+            addToCart(data);
           }}
           style={{
             paddingVertical: 8,
@@ -314,7 +325,7 @@ const Agent = (props) => {
               helpers.showComfirm({
                 title: 'Xoá tất cả món',
                 content: 'Bạn có muốn xoá tất cả món trong giỏ hàng?',
-                onOk: () => setCurrentCart([]),
+                onOk: () => helpers.setCurrentCart([]),
                 textOk: 'Xoá tất cả'
               });
             }}
@@ -363,6 +374,14 @@ const Agent = (props) => {
                       fontFamily: helpers.fonts()
                     }}
                   >
+                    Tên cửa hàng: {item.shopName}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontFamily: helpers.fonts()
+                    }}
+                  >
                     {helpers.formatMoney(parseFloat(item.price))}đ
                   </Text>
                 </View>
@@ -392,7 +411,7 @@ const Agent = (props) => {
                       fontFamily: helpers.fonts('regular')
                     }}
                   >
-                    {item.soluong}
+                    {item.count}
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
@@ -414,35 +433,35 @@ const Agent = (props) => {
     );
   };
 
+  const addToCart = (data) => {
+    let tmp = currentCart;
+    let check = true;
+    let tmp3 = tmp.map((item, index) => {
+      if (data.idShop == item.idShop && data.id == item.id) {
+        item.count += 1;
+        check = false;
+      }
+      return item;
+    });
+    if (check) {
+      let tmp2 = tmp.concat(data);
+      helpers.setCurrentCart(tmp2);
+    } else {
+      helpers.setCurrentCart(tmp3);
+    }
+    setCurrentFoodCount(1);
+    sheetRefCofirm.current.snapTo(0);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View>
-        <TouchableOpacity
-          onPress={() => {
-            props.navigation.goBack();
-          }}
-          style={{
-            position: 'absolute',
-            top: 20,
-            left: 10,
-            zIndex: 10
-          }}
-        >
-          <Ionicons
-            name="arrow-back"
-            size={40}
-            color="white"
-            style={{
-              marginRight: 4
-            }}
-          />
-        </TouchableOpacity>
         <BottomSheet
           ref={sheetRefCofirm}
           snapPoints={[0, Dimensions.get('window').height / 1.05]}
           borderRadius={10}
           renderContent={renderContentCofirm}
-          zIndex={1}
+          zIndex={2}
         />
         <View
           style={{
@@ -672,6 +691,26 @@ const Agent = (props) => {
             </Text>
           </TouchableOpacity>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: 10,
+            zIndex: 1
+          }}
+        >
+          <Ionicons
+            name="arrow-back"
+            size={40}
+            color="white"
+            style={{
+              marginRight: 4
+            }}
+          />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -696,8 +735,12 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height / 1.05,
     borderTopStartRadius: 20,
     overflow: 'hidden',
-    zIndex: 1
+    zIndex: 10
   }
 });
 
-export default Agent;
+const mapStateToProps = (state) => ({
+  cart: state.userState?.cart
+});
+
+export default connect(mapStateToProps)(Agent);

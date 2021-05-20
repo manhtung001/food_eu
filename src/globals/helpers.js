@@ -124,6 +124,14 @@ const helpers = {
     return result;
   },
 
+  setCurrentCart: (data) => {
+    let res = data.filter((item) => item.count >= 1);
+    store.dispatch({
+      type: 'UPDATE_CART',
+      data: res
+    });
+  },
+
   clearUser: async () => {
     // store.dispatch({
     //   type: 'SET_USER_INFO',
