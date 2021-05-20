@@ -28,71 +28,70 @@ const LoginScreen = ({ navigation }) => {
 
   const login = async (phone, password, token) => {
     Keyboard.dismiss();
-    // if (phone.trim() && passWord.trim()) {
-    if (true) {
+    if (phone.trim() && passWord.trim()) {
       let data = {
-        phone,
-        password
+        user_name: phone,
+        pass_word: password
+      };
+      helpers.showLoading();
+      let res = await helpers.login(data);
+      helpers.hideModal();
+      if (res?.token) {
+        navigation.replace('RootTab');
+      } else if (res?.error == 'Unauthorized') {
+        helpers.showMessage({ content: 'Sai mật khẩu' });
+      } else {
+        helpers.showMessage({ content: res.message });
       }
-      let dataDebug = {
-        phone: '0356798938',
-        password: '123456'
-      }
-      helpers.showLoading()
-      navigation.replace('RootTab');
-      // let res = await helpers.login(data);
-      helpers.hideModal()
-      // if (res.code == 0) {
-      //   navigation.replace('RootTab');
-      // } else {
-      //   helpers.showMessage({ content: res.message })
-      // }
     } else {
-      helpers.showMessage({ content: 'Vui lòng nhập số điện thoại và mật khẩu' })
+      helpers.showMessage({
+        content: 'Vui lòng nhập số điện thoại và mật khẩu'
+      });
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <View style={{
-        flexDirection: "row",
-        marginTop: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingHorizontal: 20,
-        marginBottom: 10
-      }} >
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 50,
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingHorizontal: 20,
+          marginBottom: 10
+        }}
+      >
         <Image
           source={require('../../assets/shipperBackgroud.png')}
           style={{
             width: 260,
-            aspectRatio: 600 / 563,
+            aspectRatio: 600 / 563
           }}
         />
         <View>
           <Text style={styles.logo}>MEGA</Text>
           <Text style={styles.logo}>SHIP</Text>
         </View>
-
       </View>
       <View style={styles.inputwrapper}>
-        <View style={styles.inputView} >
+        <View style={styles.inputView}>
           <TextInput
             style={styles.inputText}
-            placeholder="số điện thoại"
+            placeholder="tài khoản"
             placeholderTextColor="#003f5c"
             autoCorrect={false}
-            onChangeText={text => setPhone(text)}
+            onChangeText={(text) => setPhone(text)}
           />
         </View>
-        <View style={styles.inputView} >
+        <View style={styles.inputView}>
           <TextInput
             secureTextEntry
             style={styles.inputText}
             placeholder="mật khẩu"
             placeholderTextColor="#003f5c"
             autoCorrect={false}
-            onChangeText={text => setPassWord(text)}
+            onChangeText={(text) => setPassWord(text)}
           />
         </View>
       </View>
@@ -104,69 +103,79 @@ const LoginScreen = ({ navigation }) => {
       >
         <Text style={styles.loginText}>Đăng nhập</Text>
       </TouchableOpacity>
-
-
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('RegisterScreen');
+        }}
+      >
+        <Text
+          style={{
+            textDecorationLine: 'underline'
+          }}
+        >
+          Chưa có tài khoản? Đăng ký
+        </Text>
+      </TouchableOpacity>
     </View>
   );
-}
+};
 
 export default LoginScreen;
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   logo: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 52,
-    color: "#fb5b5a",
+    color: '#fb5b5a'
   },
   inputwrapper: {
-    width: "90%",
+    width: '90%',
     padding: 20,
     borderRadius: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     shadowColor: '#dedede',
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 1,
     shadowRadius: 10,
     elevation: 10,
-    overflow: "hidden"
+    overflow: 'hidden'
   },
   inputView: {
-    width: "100%",
-    backgroundColor: "#fff",
+    width: '100%',
+    backgroundColor: '#fff',
     borderRadius: 25,
     height: 50,
     marginBottom: 20,
-    justifyContent: "center",
+    justifyContent: 'center',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#fb5b5a"
+    borderBottomColor: '#fb5b5a'
   },
   inputText: {
     height: 50,
-    color: "black"
+    color: 'black'
   },
   forgot: {
-    color: "#fb5b5a",
+    color: '#fb5b5a',
     fontSize: 11
   },
   loginBtn: {
-    width: "80%",
-    backgroundColor: "#fb5b5a",
+    width: '80%',
+    backgroundColor: '#fb5b5a',
     borderRadius: 25,
     height: 50,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 40,
     marginBottom: 10
   },
   loginText: {
-    color: "white"
+    color: 'white',
+    fontSize: 20
   }
 });
-

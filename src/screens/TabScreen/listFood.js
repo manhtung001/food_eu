@@ -44,82 +44,6 @@ const LIMIT_DATA = 10;
 let LOADING = true;
 let CAN_LOAD_MORE = true;
 
-const DATA_TEST = [
-  {
-    khuvuc: 123105,
-    monans: [
-      {
-        cuahang: 6,
-        loaimonan: 3,
-        mamonan: 4,
-        hinhanh: null,
-        gia: 35000,
-        tenmonan: 'Trà sữa hoàng kim'
-      },
-      {
-        cuahang: 6,
-        loaimonan: 4,
-        mamonan: 5,
-        hinhanh: null,
-        gia: 3000,
-        tenmonan: 'a'
-      },
-      {
-        cuahang: 6,
-        loaimonan: 1,
-        mamonan: 2,
-        hinhanh: null,
-        gia: 5000,
-        tenmonan: 'b'
-      },
-      {
-        cuahang: 6,
-        loaimonan: 10,
-        mamonan: 11,
-        hinhanh: null,
-        gia: 350000,
-        tenmonan: 'csd'
-      },
-      {
-        cuahang: 6,
-        loaimonan: 12,
-        mamonan: 12,
-        hinhanh: null,
-        gia: 3000,
-        tenmonan: 'sadas'
-      },
-      {
-        cuahang: 6,
-        loaimonan: 14,
-        mamonan: 15,
-        hinhanh: null,
-        gia: 5000,
-        tenmonan: 'asd'
-      }
-    ],
-    thoigiangiaohang: '08:30:00',
-    macuahang: 6,
-    matkhau: 'ABC',
-    tencuahang: 'ABC',
-    email: 'ABC@gmail.com',
-    thoigianphucvu: '08:30:00',
-    dienthoai: '0948787324',
-    hinhanh: ''
-  },
-  {
-    khuvuc: 123,
-    monans: [],
-    thoigiangiaohang: '08:30:00',
-    macuahang: 7,
-    matkhau: 'ABC',
-    tencuahang: 'abbc',
-    email: 'ABC@gmail.com',
-    thoigianphucvu: '08:30:00',
-    dienthoai: '0948787324',
-    hinhanh: ''
-  }
-];
-
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -133,7 +57,7 @@ const listFood = (props) => {
     });
   }, []);
 
-  const [listFood, setListFood] = useState(DATA_TEST);
+  const [listFood, setListFood] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -148,9 +72,7 @@ const listFood = (props) => {
     toggleLoading(false);
     LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
     if (!res || res.length == 0) return;
-    console.log('getListFood');
-    console.log(res);
-    // setListFood(res.data.orderInfos);
+    setListFood(res);
   };
 
   const onRefresh = async () => {
@@ -162,7 +84,7 @@ const listFood = (props) => {
   };
 
   const toOrderDetail = async (item) => {
-    props.navigation.navigate('Agent', { data: item });
+    props.navigation.navigate('Agent', { data: item.idShop });
   };
 
   return (
@@ -178,6 +100,14 @@ const listFood = (props) => {
             onRefresh={() => onRefresh()}
             colors={[Color.Primary, Color.SUCCESS, Color.Primary]}
             tintColor={Color.Primary}
+          />
+        }
+        ListFooterComponent={
+          <View
+            style={{
+              width: '100%',
+              height: 200
+            }}
           />
         }
         ListEmptyComponent={
@@ -205,67 +135,71 @@ const listFood = (props) => {
         }
         keyExtractor={(item, index) => index + ''}
         renderItem={({ item, index }) => (
-          <View style={styles.cardItemWrapper}>
-            <TouchableOpacity
-              style={styles.cardItem}
-              onPress={() => toOrderDetail(item)}
+          <View
+            style={{
+              marginTop: 16,
+              borderTopColor: Color.GRAY2,
+              borderTopWidth: 0.5
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 26,
+                marginTop: 5,
+                fontFamily: helpers.fonts('regular'),
+                alignSelf: 'center',
+                color: Color.Primary
+              }}
             >
-              <View
+              {item.categoryName}
+            </Text>
+            {item.productResponseList.map((child, index) => (
+              <TouchableOpacity
                 style={{
-                  width: 100,
-                  height: 100,
-                  backgroundColor: 'pink'
+                  flexDirection: 'row',
+                  marginTop: 10
                 }}
-              />
-              <View
-                style={{
-                  marginLeft: 10
-                }}
+                key={index}
+                onPress={() => toOrderDetail(child)}
               >
                 <View
+                  style={{ width: 100, height: 100, backgroundColor: 'pink' }}
+                />
+                <View
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center'
+                    marginLeft: 10
                   }}
                 >
-                  <Ionicons
-                    name="md-shield-checkmark"
-                    size={20}
-                    color="#FF8C00"
-                    style={{
-                      marginRight: 4
-                    }}
-                  />
                   <Text
                     style={{
-                      fontSize: 24,
+                      fontSize: 16,
                       marginTop: 4,
                       fontFamily: helpers.fonts('regular')
                     }}
                   >
-                    {item.tencuahang}
+                    {child.productName}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      marginTop: 4,
+                      fontFamily: helpers.fonts('regular')
+                    }}
+                  >
+                    Tên cửa hàng: {child.shopName}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      marginTop: 4,
+                      fontFamily: helpers.fonts('regular')
+                    }}
+                  >
+                    Giá {child.price}
                   </Text>
                 </View>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    marginTop: 4,
-                    fontFamily: helpers.fonts()
-                  }}
-                >
-                  Email: {item.email}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    marginTop: 4,
-                    fontFamily: helpers.fonts()
-                  }}
-                >
-                  SĐT: {item.dienthoai}
-                </Text>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            ))}
           </View>
         )}
       ></FlatList>

@@ -1,4 +1,5 @@
 export { default as LoginScreen } from './Login/LoginScreen';
+export { default as RegisterScreen } from './Login/RegisterScreen';
 
 export { default as Profile } from './Profile/Profile';
 export { default as History } from './History';
@@ -14,5 +15,6 @@ export { default as Agent } from './Agent';
 export { default as Cofirm } from './Cofirm';
 
 export { default as SearchScreen } from './Search';
+export { default as SearchResult } from './Search/SearchResult';
 
 export { default as NotificationScreen } from './Notification/NotificationScreen';

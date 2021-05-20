@@ -1,7 +1,11 @@
 import request from './request';
 let dataService = {
   login: (params) => {
-    let url = 'api/shipper/login';
+    let url = 'api/user/login';
+    return request.post(params, url);
+  },
+  register: (params) => {
+    let url = 'api/user/register';
     return request.post(params, url);
   },
   refreshToken: (params, token) => {
@@ -14,8 +18,15 @@ let dataService = {
     return request.get(url);
   },
   getListFood: () => {
-    let url = 'api/product/getproductbyidProduct/1';
+    let url = 'api/product/searchByCategory';
     return request.get(url);
+  },
+  getProductByIdShop: (id) => {
+    if (id) {
+      let url = `api/product/getproductbyidShop/${id}`;
+      return request.get(url);
+    }
+    return [];
   }
 
   // getListNotification: (params) => {

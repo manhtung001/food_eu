@@ -37,6 +37,8 @@ const Agent = (props) => {
   const sheetRefCofirm = React.useRef(null);
   const sheetRefCart = React.useRef(null);
   const [currentFood, setCurrentFood] = useState('');
+  const [dataFood, setDataFood] = useState([]);
+  const [infoShop, setInfoShop] = useState([]);
   let [currentFoodCount, setCurrentFoodCount] = useState(1);
 
   const [currentCart, setCurrentCart] = useState([]);
@@ -44,6 +46,20 @@ const Agent = (props) => {
 
   const toCofirm = () => {
     props.navigation.navigate('Cofirm', { data: currentCart });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    helpers.showLoading();
+    let res = await dataService.getProductByIdShop(data);
+    helpers.hideModal();
+    if (res) {
+      setInfoShop(res);
+      setDataFood(res.productResponseList);
+    }
   };
 
   const onChangeCount = (status, data) => {
@@ -63,7 +79,7 @@ const Agent = (props) => {
     let total = 0;
     tmp.length > 0 &&
       tmp.forEach((item) => {
-        total += parseInt(item.gia) * item.soluong;
+        total += parseInt(item.price) * item.soluong;
       });
     return total;
   };
@@ -143,7 +159,7 @@ const Agent = (props) => {
                 fontFamily: helpers.fonts('regular')
               }}
             >
-              {currentFood.tenmonan}
+              {currentFood.productName}
             </Text>
             <View
               style={{
@@ -159,7 +175,7 @@ const Agent = (props) => {
                   fontFamily: helpers.fonts('regular')
                 }}
               >
-                {helpers.formatMoney(parseFloat(currentFood.gia))}đ
+                {helpers.formatMoney(parseFloat(currentFood.price))}đ
               </Text>
               <View
                 style={{
@@ -219,7 +235,10 @@ const Agent = (props) => {
             fontFamily: helpers.fonts('bold')
           }}
         >
-          {helpers.formatMoney(parseFloat(currentFood.gia) * currentFoodCount)}đ
+          {helpers.formatMoney(
+            parseFloat(currentFood.price) * currentFoodCount
+          )}
+          đ
         </Text>
         <TouchableOpacity
           onPress={() => {
@@ -336,7 +355,7 @@ const Agent = (props) => {
                       fontFamily: helpers.fonts()
                     }}
                   >
-                    {item.tenmonan}
+                    {item.productName}
                   </Text>
                   <Text
                     style={{
@@ -344,7 +363,7 @@ const Agent = (props) => {
                       fontFamily: helpers.fonts()
                     }}
                   >
-                    {helpers.formatMoney(parseFloat(item.gia))}đ
+                    {helpers.formatMoney(parseFloat(item.price))}đ
                   </Text>
                 </View>
                 <View
@@ -398,6 +417,26 @@ const Agent = (props) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View>
+        <TouchableOpacity
+          onPress={() => {
+            props.navigation.goBack();
+          }}
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: 10,
+            zIndex: 10
+          }}
+        >
+          <Ionicons
+            name="arrow-back"
+            size={40}
+            color="white"
+            style={{
+              marginRight: 4
+            }}
+          />
+        </TouchableOpacity>
         <BottomSheet
           ref={sheetRefCofirm}
           snapPoints={[0, Dimensions.get('window').height / 1.05]}
@@ -427,12 +466,12 @@ const Agent = (props) => {
               <View
                 style={{
                   width: '100%',
-                  height: 50
+                  height: 200
                 }}
               />
             }
             keyExtractor={(item, index) => index + ''}
-            data={data.monans}
+            data={dataFood}
             ListHeaderComponent={
               <View>
                 <View
@@ -450,7 +489,8 @@ const Agent = (props) => {
                   <View
                     style={{
                       flexDirection: 'row',
-                      alignItems: 'center'
+                      alignItems: 'center',
+                      marginTop: 10
                     }}
                   >
                     <Ionicons
@@ -467,44 +507,35 @@ const Agent = (props) => {
                         fontFamily: helpers.fonts('bold')
                       }}
                     >
-                      {data.tencuahang}
+                      {infoShop.name}
                     </Text>
                   </View>
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: 20,
                       marginTop: 4,
                       fontFamily: helpers.fonts()
                     }}
                   >
-                    SĐT: {data.dienthoai}
+                    SĐT: {infoShop.phoneNumber}
                   </Text>
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: 20,
                       marginTop: 4,
                       fontFamily: helpers.fonts()
                     }}
                   >
-                    Email: {data.email}
+                    Email: {infoShop.email}
                   </Text>
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: 20,
                       marginTop: 4,
                       fontFamily: helpers.fonts()
                     }}
                   >
-                    Thời gian phục vụ: {data.thoigianphucvu}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      marginTop: 4,
-                      fontFamily: helpers.fonts()
-                    }}
-                  >
-                    Thời gian giao hàng: {data.thoigiangiaohang}
+                    Khu vực: {infoShop.are}
                   </Text>
                 </View>
                 <View
@@ -526,7 +557,7 @@ const Agent = (props) => {
                   borderBottomWidth: 1,
                   borderBottomColor: Color.GRAY3
                 }}
-                key={item.mamonan}
+                key={item.id}
               >
                 <View
                   style={{
@@ -547,7 +578,7 @@ const Agent = (props) => {
                       fontFamily: helpers.fonts('regular')
                     }}
                   >
-                    {item.tenmonan}
+                    {item.productName}
                   </Text>
                   <View
                     style={{
@@ -563,7 +594,7 @@ const Agent = (props) => {
                         fontFamily: helpers.fonts('regular')
                       }}
                     >
-                      {helpers.formatMoney(parseFloat(item.gia))}đ
+                      {helpers.formatMoney(parseFloat(item.price))}đ
                     </Text>
                     <TouchableOpacity
                       onPress={() => {

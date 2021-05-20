@@ -104,17 +104,23 @@ const helpers = {
 
   login: async (data) => {
     let result = await dataService.login(data);
-    if (result.code == 0) {
+
+    if (result?.token) {
       store.dispatch({
         type: 'SET_USER_INFO',
-        data: result.data.shipperInfo
+        data: result?.user
       });
       store.dispatch({
         type: 'SET_TOKEN',
-        data: result.data.token
+        data: result.token
       });
-      await AsyncStorage.setItem('token', result.data.token);
+      await AsyncStorage.setItem('token', result.token);
     }
+    return result;
+  },
+
+  register: async (data) => {
+    let result = await dataService.register(data);
     return result;
   },
 

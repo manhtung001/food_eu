@@ -84,7 +84,7 @@ const listShop = (props) => {
   };
 
   const toOrderDetail = async (item) => {
-    // props.navigation.navigate('Agent', { data: item });
+    props.navigation.navigate('Agent', { data: item.id });
   };
 
   return (
@@ -126,6 +126,14 @@ const listShop = (props) => {
           )
         }
         keyExtractor={(item, index) => index + ''}
+        ListFooterComponent={
+          <View
+            style={{
+              width: '100%',
+              height: 200
+            }}
+          />
+        }
         renderItem={({ item, index }) => (
           <View style={styles.cardItemWrapper}>
             <TouchableOpacity

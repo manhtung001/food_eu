@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,41 +6,54 @@ import {
   Modal,
   SafeAreaView,
   TextInput,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
   Animated,
   Platform,
-  LayoutAnimation,
-  UIManager,
+  SafeAreaViewBase,
   Text
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Layout from '../../constants/Layout';
 import Color from '../../constants/Color';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { FlatList } from 'react-native-gesture-handler';
+import dataService from '../../network/dataService';
 import helpers from '../../globals/helpers';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// fake data search
+const TopTab = createMaterialTopTabNavigator();
 
-const KEYS_TO_FILTERS = ['name'];
-const hotKeys = [
-  { id: 0, name: 'Cà phê' },
-  { id: 1, name: 'Đồ ăn' },
-  { id: 2, name: 'Trà sữa' }
-];
+let LOADING = false;
+let CAN_LOAD_MORE = true;
+const LIMIT_DATA = 20;
 
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+export default function SearchResult(props) {
+  const [keySearch, setKeySearch] = useState(props.route.params.keySearch);
+  const [listCategory, setListCategory] = useState([]);
+  const [listName, setListName] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
-export default function SearchScreen(props) {
-  const [keySearch, setKeySearch] = useState('');
+  useEffect(() => {}, []);
+
+  const followCategory = () => {
+    return (
+      <SafeAreaView>
+        <Text>followCategory</Text>
+      </SafeAreaView>
+    );
+  };
+  const followName = () => {
+    return (
+      <SafeAreaView>
+        <Text>followName</Text>
+      </SafeAreaView>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.safearea} />
+      <SafeAreaView />
       <View style={styles.header}>
         <TouchableOpacity
           style={{ justifyContent: 'center' }}
@@ -51,44 +64,26 @@ export default function SearchScreen(props) {
         <View style={styles.wrapInput}>
           <Ionicons name="search" style={styles.iconSearch} />
           <View width={10} />
-          <TextInput
-            style={styles.input}
-            placeholder={'Nhập từ khoá'}
-            placeholderTextColor="#BCBCBC"
-            value={keySearch}
-            onChangeText={(text) => {
-              LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-              setKeySearch(text);
-            }}
-            autoCorrect={false}
-            onSubmitEditing={() => {
-              props.navigation.navigate('SearchResult', { keySearch });
-            }}
-          />
-          <TouchableOpacity onPress={() => setKeySearch('')}>
+          <View style={styles.input}>
+            <Text style={styles.textInput}>{keySearch}</Text>
+          </View>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <Ionicons name="close-outline" style={styles.iconSearch} />
           </TouchableOpacity>
         </View>
       </View>
 
-      <View style={{ backgroundColor: '#fff', flex: 1 }}>
-        <Text style={styles.txtPopular}>Từ khoá phổ biến</Text>
-        <View style={styles.wrapHotKey}>
-          {hotKeys.map((item, index) => (
-            <TouchableOpacity
-              key={'hotKey' + index}
-              style={styles.hotKey}
-              onPress={() =>
-                props.navigation.navigate('SearchResult', {
-                  keySearch: item.name
-                })
-              }
-            >
-              <Text>{item.name}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
+      <TopTab.Navigator
+        tabBarOptions={{
+          activeTintColor: Color.Primary,
+          inactiveTintColor: Color.GRAY,
+          indicatorStyle: { backgroundColor: Color.Primary }
+        }}
+        lazy={true}
+      >
+        <TopTab.Screen name="Tìm theo loại món ăn" component={followCategory} />
+        <TopTab.Screen name="Tìm theo tên món ăn" component={followName} />
+      </TopTab.Navigator>
     </View>
   );
 }
@@ -127,6 +122,9 @@ const styles = StyleSheet.create({
   input: {
     height: 44,
     width: '80%',
+    justifyContent: 'center'
+  },
+  textInput: {
     fontSize: 16
   },
   txtPopular: {
