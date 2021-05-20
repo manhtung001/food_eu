@@ -27,6 +27,10 @@ let dataService = {
       return request.get(url);
     }
     return [];
+  },
+  getListSearchAll: () => {
+    let url = 'api/product/getAll';
+    return request.get(url);
   }
 
   // getListNotification: (params) => {

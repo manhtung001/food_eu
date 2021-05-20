@@ -21,32 +21,205 @@ import dataService from '../../network/dataService';
 import helpers from '../../globals/helpers';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createFilter } from 'react-native-search-filter';
+
 
 const TopTab = createMaterialTopTabNavigator();
 
-let LOADING = false;
-let CAN_LOAD_MORE = true;
-const LIMIT_DATA = 20;
+
+const KEYS_TO_FILTERS_1 = ['productName'];
+const KEYS_TO_FILTERS_2 = ['categoryProductName'];
 
 export default function SearchResult(props) {
   const [keySearch, setKeySearch] = useState(props.route.params.keySearch);
-  const [listCategory, setListCategory] = useState([]);
-  const [listName, setListName] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const [listAll, setListAll] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getListAll()
+  }, []);
+
+  const getListAll = async () => {
+    let res = await dataService.getListSearchAll();
+    if (res) {
+      setListAll(res)
+    }
+  }
 
   const followCategory = () => {
+    const filteredFollowCategory = listAll.filter(createFilter(keySearch, KEYS_TO_FILTERS_2))
     return (
-      <SafeAreaView>
-        <Text>followCategory</Text>
+      <SafeAreaView
+        style={styles.container}
+      >
+        <FlatList
+          bounces={true}
+          bouncesZoom={false}
+          contentContainerStyle={{
+            paddingBottom: 50
+          }}
+          ListFooterComponent={
+            <View
+              style={{
+                width: '100%',
+                height: 200
+              }}
+            />
+          }
+          keyExtractor={(item, index) => index + ''}
+          data={filteredFollowCategory}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                marginTop: 20,
+                paddingBottom: 10,
+                borderBottomWidth: 1,
+                borderBottomColor: Color.GRAY3
+              }}
+              key={item.id}
+              onPress={() => {
+                props.navigation.navigate('Agent', { data: item.idShop })
+              }}
+            >
+              <View
+                style={{
+                  width: 100,
+                  height: 100,
+                  backgroundColor: 'pink',
+                  marginLeft: 10
+                }}
+              />
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: 16
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: helpers.fonts('regular')
+                  }}
+                >
+                  Loại: {item.categoryProductName}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: helpers.fonts('regular')
+                  }}
+                >
+                  Tên: {item.productName}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: helpers.fonts('regular')
+                  }}
+                >
+                  Tên cửa hàng: {item.shopName}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: helpers.fonts('regular')
+                  }}
+                >
+                  Giá: {helpers.formatMoney(parseFloat(item.price))}đ
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
       </SafeAreaView>
     );
   };
   const followName = () => {
+    const filteredFollowName = listAll.filter(createFilter(keySearch, KEYS_TO_FILTERS_1))
     return (
-      <SafeAreaView>
-        <Text>followName</Text>
+      <SafeAreaView
+        style={styles.container}
+      >
+        <FlatList
+          bounces={true}
+          bouncesZoom={false}
+          contentContainerStyle={{
+            paddingBottom: 50
+          }}
+          ListFooterComponent={
+            <View
+              style={{
+                width: '100%',
+                height: 200
+              }}
+            />
+          }
+          keyExtractor={(item, index) => index + ''}
+          data={filteredFollowName}
+          renderItem={({ item, index }) => (
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                marginTop: 20,
+                paddingBottom: 10,
+                borderBottomWidth: 1,
+                borderBottomColor: Color.GRAY3
+              }}
+              key={item.id}
+              onPress={() => {
+                props.navigation.navigate('Agent', { data: item.idShop })
+              }}
+            >
+              <View
+                style={{
+                  width: 100,
+                  height: 100,
+                  backgroundColor: 'pink',
+                  marginLeft: 10
+                }}
+              />
+              <View
+                style={{
+                  flex: 1,
+                  marginLeft: 16
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: helpers.fonts('regular')
+                  }}
+                >
+                  Loại: {item.categoryProductName}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: helpers.fonts('regular')
+                  }}
+                >
+                  Tên: {item.productName}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: helpers.fonts('regular')
+                  }}
+                >
+                  Tên cửa hàng: {item.shopName}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: helpers.fonts('regular')
+                  }}
+                >
+                  Giá: {helpers.formatMoney(parseFloat(item.price))}đ
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
       </SafeAreaView>
     );
   };

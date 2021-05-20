@@ -21,7 +21,6 @@ import helpers from '../../globals/helpers';
 
 // fake data search
 
-const KEYS_TO_FILTERS = ['name'];
 const hotKeys = [
   { id: 0, name: 'Cà phê' },
   { id: 1, name: 'Đồ ăn' },
