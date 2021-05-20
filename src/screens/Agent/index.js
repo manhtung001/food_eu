@@ -70,21 +70,23 @@ const Agent = (props) => {
     let tmp = currentCart;
     let tmp2 = tmp.map((item, index) => {
       if (item.idShop == data.idShop && item.id == data.id) {
-        if (status == 'de' && item.count >= 2) item.count -= 1;
-        // else if (status == 'de' && item.count == 1) {
-        //   helpers.showComfirm({
-        //     content: `Bạn có chắc chắn muốn xoá ${item.productName} của cửa hàng ${item.shopName} ra khỏi giỏ hàng?`,
-        //     onOk: () => {
-        //       item.count -= 1;
-        //     }
-        //   });
-        // }
+        if (status == 'de' && item.count >= 1) {
+          if (item.count == 1) {
+            helpers.showComfirm({
+              content: `Bạn có chắc chắn muốn xoá ${item.productName} của cửa hàng ${item.shopName} ra khỏi giỏ hàng?`,
+              onOk: () => {
+                item.count -= 1;
+                helpers.setCurrentCart(tmp2);
+              }
+            });
+          } else {
+            item.count -= 1;
+          }
+        }
         else if (status == 'in') item.count += 1;
       }
       return item;
     });
-    console.log(' helpers.setCurrentCart(tmp2);');
-    console.log(tmp2);
     helpers.setCurrentCart(tmp2);
   };
 
@@ -438,7 +440,7 @@ const Agent = (props) => {
     let check = true;
     let tmp3 = tmp.map((item, index) => {
       if (data.idShop == item.idShop && data.id == item.id) {
-        item.count += 1;
+        item.count += data.count;
         check = false;
       }
       return item;
@@ -458,22 +460,22 @@ const Agent = (props) => {
       <View>
         <BottomSheet
           ref={sheetRefCofirm}
-          snapPoints={[0, Dimensions.get('window').height / 1.05]}
+          snapPoints={[0, Dimensions.get('window').height / 1.15]}
           borderRadius={10}
           renderContent={renderContentCofirm}
-          zIndex={2}
+          zIndex={4}
         />
         <View
           style={{
-            zIndex: 1
+            zIndex: 2
           }}
         >
           <BottomSheet
             ref={sheetRefCart}
-            snapPoints={[0, Dimensions.get('window').height / 1.05]}
+            snapPoints={[0, Dimensions.get('window').height / 1.15]}
             borderRadius={10}
             renderContent={renderContentCart}
-            zIndex={1}
+            zIndex={3}
           />
           <Animated.FlatList
             bounces={true}
@@ -699,7 +701,7 @@ const Agent = (props) => {
             position: 'absolute',
             top: 20,
             left: 10,
-            zIndex: 1
+            zIndex: 2
           }}
         >
           <Ionicons
@@ -732,7 +734,7 @@ const styles = StyleSheet.create({
   },
   groupWrapper: {
     backgroundColor: 'white',
-    height: Dimensions.get('window').height / 1.05,
+    height: Dimensions.get('window').height / 1.15,
     borderTopStartRadius: 20,
     overflow: 'hidden',
     zIndex: 10
