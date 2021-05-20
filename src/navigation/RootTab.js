@@ -78,8 +78,8 @@ const TopTabScreen = (props) => {
         }}
         lazy={true}
       >
-        <TopTab.Screen name="DS cua hang" component={listShop} />
-        <TopTab.Screen name="mon an theo loai" component={listFood} />
+        <TopTab.Screen name="Cửa hàng" component={listShop} />
+        <TopTab.Screen name="Món ăn theo loại" component={listFood} />
       </TopTab.Navigator>
     </SafeAreaView>
   );

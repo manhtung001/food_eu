@@ -48,7 +48,12 @@ const Profile = (props) => {
           backgroundColor: '#fff'
         }}
       >
-        <View style={styles.avatar}>
+        <TouchableOpacity
+          style={styles.avatar}
+          onPress={() => {
+            props.navigation.navigate("EditProfile")
+          }}
+        >
           <Image
             source={{
               uri:
@@ -105,7 +110,7 @@ const Profile = (props) => {
               </Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={{

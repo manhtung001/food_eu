@@ -2,6 +2,7 @@ export { default as LoginScreen } from './Login/LoginScreen';
 export { default as RegisterScreen } from './Login/RegisterScreen';
 
 export { default as Profile } from './Profile/Profile';
+export { default as EditProfile } from './Profile/EditProfile';
 export { default as History } from './History';
 
 //TABSCREEN

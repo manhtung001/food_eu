@@ -13,7 +13,8 @@ import {
   SearchScreen,
   Cofirm,
   SearchResult,
-  RegisterScreen
+  RegisterScreen,
+  EditProfile
 } from '../screens/index';
 import RootTab from './RootTab';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -30,6 +31,7 @@ const RootStack = () => {
       initialRouteName={helpers.getToken() ? 'RootTab' : 'LoginScreen'}
     >
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       <Stack.Screen name="RootTab" component={RootTab} />
       <Stack.Screen name="Agent" component={Agent} />
