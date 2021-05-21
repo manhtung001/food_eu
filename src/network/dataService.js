@@ -12,6 +12,10 @@ let dataService = {
     let url = 'api/shipper/renew-token';
     return request.post(params, url, token);
   },
+  orderFood: (params) => {
+    let url = 'api/user/order';
+    return request.post(params, url);
+  },
 
   getListShop: () => {
     let url = 'api/shop/getAll';
@@ -30,6 +34,10 @@ let dataService = {
   },
   getListSearchAll: () => {
     let url = 'api/product/getAll';
+    return request.get(url);
+  },
+  getListShipping: (id) => {
+    let url = `api/user/getHistoryOrder/${id}`;
     return request.get(url);
   }
 

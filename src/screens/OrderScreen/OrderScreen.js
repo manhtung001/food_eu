@@ -43,15 +43,24 @@ const TopTabScreen = (props) => {
         }}
         lazy={true}
       >
-        <TopTab.Screen name="Dang giao" component={ShippingScreen} />
+        <TopTab.Screen name="Đang giao" component={ShippingScreen} />
 
-        <TopTab.Screen name="Da giao" component={ShippedScreen} />
+        <TopTab.Screen name="Đã giao" component={ShippedScreen} />
       </TopTab.Navigator>
     </SafeAreaView>
   );
 };
 
 const ShippingScreen = (props) => {
+  useEffect(() => {
+    onRefresh();
+  }, []);
+
+  onRefresh = async () => {
+    helpers.showLoading();
+    // let res = await dataService.getListShipping(props.userInfo.id)
+    helpers.hideModal();
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <Text>ShippingScreen</Text>
@@ -69,4 +78,8 @@ const ShippedScreen = (props) => {
 
 const styles = StyleSheet.create({});
 
-export default TopTabScreen;
+const mapStateToProps = (state) => ({
+  userInfo: state.userState?.user
+});
+
+export default connect(mapStateToProps)(TopTabScreen);
