@@ -82,7 +82,9 @@ const listFood = (props) => {
     setRefreshing(false);
   };
 
-  const toOrderDetail = async (item) => {
+  const toOrderDetail = (item) => {
+    console.log("toOrderDetail")
+    console.log(item)
     props.navigation.navigate('Agent', { data: item.idShop });
   };
 

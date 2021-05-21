@@ -70,8 +70,8 @@ const LoginScreen = ({ navigation }) => {
           }}
         />
         <View>
-          <Text style={styles.logo}>MEGA</Text>
-          <Text style={styles.logo}>SHIP</Text>
+          <Text style={styles.logo}>ORDER</Text>
+          <Text style={styles.logo}>FOOD</Text>
         </View>
       </View>
       <View style={styles.inputwrapper}>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontWeight: 'bold',
-    fontSize: 52,
+    fontSize: 44,
     color: '#fb5b5a'
   },
   inputwrapper: {
