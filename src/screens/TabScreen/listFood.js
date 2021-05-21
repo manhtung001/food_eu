@@ -52,9 +52,7 @@ if (Platform.OS === 'android') {
 
 const listFood = (props) => {
   useEffect(() => {
-    props.navigation.addListener('focus', () => {
-      onRefresh();
-    });
+    onRefresh();
   }, []);
 
   const [listFood, setListFood] = useState([]);

@@ -39,7 +39,6 @@ const TopTabScreen = (props) => {
   };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <Text>Giao hang den:</Text>
       <TouchableOpacity onPress={() => toSearch()}>
         <View
           style={{
@@ -48,7 +47,8 @@ const TopTabScreen = (props) => {
             backgroundColor: Color.GRAY3,
             borderRadius: 20,
             padding: 10,
-            flexDirection: 'row'
+            flexDirection: 'row',
+            marginTop: 8
           }}
         >
           <FontAwesome

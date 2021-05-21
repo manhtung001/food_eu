@@ -14,7 +14,8 @@ import {
   Cofirm,
   SearchResult,
   RegisterScreen,
-  EditProfile
+  EditProfile,
+  OrderDetailScreen
 } from '../screens/index';
 import RootTab from './RootTab';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -38,6 +39,7 @@ const RootStack = () => {
       <Stack.Screen name="SearchScreen" component={SearchScreen} />
       <Stack.Screen name="SearchResult" component={SearchResult} />
       <Stack.Screen name="Cofirm" component={Cofirm} />
+      <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} />
     </Stack.Navigator>
   );
 };

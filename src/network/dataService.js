@@ -8,6 +8,11 @@ let dataService = {
     let url = 'api/user/register';
     return request.post(params, url);
   },
+  changeInfoAccount: (params) => {
+    let url = 'api/user/changeInfor';
+    return request.put(params, url);
+  },
+
   refreshToken: (params, token) => {
     let url = 'api/shipper/renew-token';
     return request.post(params, url, token);

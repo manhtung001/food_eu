@@ -23,14 +23,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Color from '../../constants/Color';
 import helpers from './../../globals/helpers';
 import { connect } from 'react-redux';
+import dataService from '../../network/dataService';
 
 const EditProfile = ({ navigation, userInfo }) => {
+  console.log(userInfo);
   const [nameAccount, setNameAccount] = useState(userInfo.username);
   const [phone, setPhone] = useState(userInfo.phoneNumber);
   const [email, setEmail] = useState(userInfo.email);
   const [name, setName] = useState(userInfo.name);
-  const [passWord, setPassWord] = useState('');
-  const [passWordAgain, setPassWordAgain] = useState('');
+  const [passWord, setPassWord] = useState(userInfo.password);
+  const [passWordAgain, setPassWordAgain] = useState(userInfo.password);
 
   const changeInfoAccount = async () => {
     Keyboard.dismiss();
@@ -54,13 +56,14 @@ const EditProfile = ({ navigation, userInfo }) => {
         email: email
       };
       helpers.showLoading();
-      // let res = await helpers.changeInfoAccount(data);
+      let res = await dataService.changeInfoAccount(data);
       helpers.hideModal();
-      if (res.message == 'Đăng Ký Thành Công') {
+      console.log(res);
+      if (res.message == 'Sửa thành công') {
         helpers.showMessage({
-          content: res.message
+          content: 'Sửa thành công. Vui lòng đăng nhập lại!'
         });
-        navigation.goBack();
+        navigation.replace('LoginScreen');
       } else {
         helpers.showMessage({
           content: 'Đã có lỗi xảy ra'
@@ -109,15 +112,20 @@ const EditProfile = ({ navigation, userInfo }) => {
         </View>
       </View>
       <View style={styles.inputwrapper}>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.inputText}
-            placeholder="tài khoản"
-            placeholderTextColor="#003f5c"
-            autoCorrect={false}
-            onChangeText={(text) => setNameAccount(text)}
-            value={nameAccount}
-          />
+        <View
+          style={{
+            alignSelf: 'center',
+            marginBottom: 10
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              color: 'black'
+            }}
+          >
+            User Name: {nameAccount}
+          </Text>
         </View>
         <View style={styles.inputView}>
           <TextInput
@@ -182,9 +190,8 @@ const EditProfile = ({ navigation, userInfo }) => {
   );
 };
 
-
 const mapStateToProps = (state) => ({
-  userInfo: state.userState?.user,
+  userInfo: state.userState?.user
 });
 
 export default connect(mapStateToProps)(EditProfile);
