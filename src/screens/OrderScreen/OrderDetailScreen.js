@@ -153,7 +153,8 @@ const OrderDtailScreen = (props) => {
                     <Text
                       style={{
                         fontSize: 16,
-                        marginTop: 5
+                        marginTop: 5,
+                        marginLeft: 10
                       }}
                     >
                       Giá: {child.price} x {child.count} ={' '}
