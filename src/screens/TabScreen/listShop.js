@@ -39,6 +39,7 @@ import Color from '../../constants/Color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import helpers from '../../globals/helpers';
+import FastImage from 'react-native-fast-image';
 
 const LIMIT_DATA = 10;
 let LOADING = true;
@@ -138,12 +139,13 @@ const listShop = (props) => {
               style={styles.cardItem}
               onPress={() => toOrderDetail(item)}
             >
-              <View
-                style={{
-                  width: 100,
-                  height: 100,
-                  backgroundColor: 'pink'
+              <FastImage
+                style={{ width: 100, height: 100 }}
+                source={{
+                  uri: item.linkImage,
+                  priority: FastImage.priority.normal
                 }}
+                resizeMode={FastImage.resizeMode.contain}
               />
               <View
                 style={{

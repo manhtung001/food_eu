@@ -23,9 +23,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createFilter } from 'react-native-search-filter';
 
-
 const TopTab = createMaterialTopTabNavigator();
-
 
 const KEYS_TO_FILTERS_1 = ['productName'];
 const KEYS_TO_FILTERS_2 = ['categoryProductName'];
@@ -35,22 +33,22 @@ export default function SearchResult(props) {
   const [listAll, setListAll] = useState([]);
 
   useEffect(() => {
-    getListAll()
+    getListAll();
   }, []);
 
   const getListAll = async () => {
     let res = await dataService.getListSearchAll();
     if (res) {
-      setListAll(res)
+      setListAll(res);
     }
-  }
+  };
 
   const followCategory = () => {
-    const filteredFollowCategory = listAll.filter(createFilter(keySearch, KEYS_TO_FILTERS_2))
+    const filteredFollowCategory = listAll.filter(
+      createFilter(keySearch, KEYS_TO_FILTERS_2)
+    );
     return (
-      <SafeAreaView
-        style={styles.container}
-      >
+      <SafeAreaView style={styles.container}>
         <FlatList
           bounces={true}
           bouncesZoom={false}
@@ -78,16 +76,16 @@ export default function SearchResult(props) {
               }}
               key={item.id}
               onPress={() => {
-                props.navigation.navigate('Agent', { data: item.idShop })
+                props.navigation.navigate('Agent', { data: item.idShop });
               }}
             >
-              <View
-                style={{
-                  width: 100,
-                  height: 100,
-                  backgroundColor: 'pink',
-                  marginLeft: 10
+              <FastImage
+                style={{ width: 100, height: 100, marginLeft: 10 }}
+                source={{
+                  uri: item.linkImage,
+                  priority: FastImage.priority.normal
                 }}
+                resizeMode={FastImage.resizeMode.contain}
               />
               <View
                 style={{
@@ -135,11 +133,11 @@ export default function SearchResult(props) {
     );
   };
   const followName = () => {
-    const filteredFollowName = listAll.filter(createFilter(keySearch, KEYS_TO_FILTERS_1))
+    const filteredFollowName = listAll.filter(
+      createFilter(keySearch, KEYS_TO_FILTERS_1)
+    );
     return (
-      <SafeAreaView
-        style={styles.container}
-      >
+      <SafeAreaView style={styles.container}>
         <FlatList
           bounces={true}
           bouncesZoom={false}
@@ -167,16 +165,16 @@ export default function SearchResult(props) {
               }}
               key={item.id}
               onPress={() => {
-                props.navigation.navigate('Agent', { data: item.idShop })
+                props.navigation.navigate('Agent', { data: item.idShop });
               }}
             >
-              <View
-                style={{
-                  width: 100,
-                  height: 100,
-                  backgroundColor: 'pink',
-                  marginLeft: 10
+              <FastImage
+                style={{ width: 100, height: 100, marginLeft: 10 }}
+                source={{
+                  uri: item.linkImage,
+                  priority: FastImage.priority.normal
                 }}
+                resizeMode={FastImage.resizeMode.contain}
               />
               <View
                 style={{

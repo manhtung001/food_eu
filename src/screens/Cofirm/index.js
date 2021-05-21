@@ -25,8 +25,9 @@ import dataService from '../../network/dataService';
 import Layout from '../../constants/Layout';
 import moment from 'moment';
 import Color from '../../constants/Color';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import helpers from '../../globals/helpers';
+import FastImage from 'react-native-fast-image';
 
 const Cofirm = (props) => {
   const onCountTotalMoney = (data) => {
@@ -81,9 +82,23 @@ const Cofirm = (props) => {
             }}
           >
             <TouchableOpacity onPress={() => props.navigation.goBack()}>
-              <Text>back</Text>
+              <Ionicons
+                name="arrow-back"
+                size={40}
+                color={Color.Primary}
+                style={{
+                  marginLeft: 10
+                }}
+              />
             </TouchableOpacity>
-            <Text>Xác nhận đơn hàng</Text>
+            <Text
+              style={{
+                fontSize: 26,
+                marginVertical: 10
+              }}
+            >
+              Xác nhận đơn hàng
+            </Text>
             <View style={{ width: 40, height: 1 }} />
           </View>
         }
@@ -98,12 +113,13 @@ const Cofirm = (props) => {
             }}
             key={item.id}
           >
-            <View
-              style={{
-                width: 90,
-                height: 90,
-                backgroundColor: 'pink'
+            <FastImage
+              style={{ width: 90, height: 90, marginLeft: 10 }}
+              source={{
+                uri: item.linkImage,
+                priority: FastImage.priority.normal
               }}
+              resizeMode={FastImage.resizeMode.contain}
             />
             <View
               style={{
@@ -189,7 +205,14 @@ const Cofirm = (props) => {
             orderCart();
           }}
         >
-          <Text>Đặt hàng</Text>
+          <Text
+            style={{
+              color: Color.WHITE,
+              fontSize: 20
+            }}
+          >
+            Đặt hàng
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

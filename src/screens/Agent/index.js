@@ -32,6 +32,7 @@ import helpers from '../../globals/helpers';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FastImage from 'react-native-fast-image';
 
 const Agent = (props) => {
   const sheetRefCofirm = React.useRef(null);
@@ -82,8 +83,7 @@ const Agent = (props) => {
           } else {
             item.count -= 1;
           }
-        }
-        else if (status == 'in') item.count += 1;
+        } else if (status == 'in') item.count += 1;
       }
       return item;
     });
@@ -155,13 +155,13 @@ const Agent = (props) => {
             width: '100%'
           }}
         >
-          <View
-            style={{
-              width: 90,
-              height: 90,
-              backgroundColor: 'green',
-              marginLeft: 10
+          <FastImage
+            style={{ width: 90, height: 90, marginLeft: 10 }}
+            source={{
+              uri: currentFood.linkImage,
+              priority: FastImage.priority.normal
             }}
+            resizeMode={FastImage.resizeMode.contain}
           />
           <View
             style={{
@@ -495,13 +495,18 @@ const Agent = (props) => {
             data={dataFood}
             ListHeaderComponent={
               <View>
-                <View
+                <FastImage
                   style={{
                     width: Layout.screen.width,
-                    height: Layout.screen.height / 4,
-                    backgroundColor: 'pink'
+                    height: Layout.screen.height / 4
                   }}
+                  source={{
+                    uri: infoShop.linkImage,
+                    priority: FastImage.priority.normal
+                  }}
+                  resizeMode={FastImage.resizeMode.contain}
                 />
+
                 <View
                   style={{
                     marginLeft: 10
@@ -528,7 +533,7 @@ const Agent = (props) => {
                         fontFamily: helpers.fonts('bold')
                       }}
                     >
-                      {infoShop.name}
+                      {infoShop.shopName}
                     </Text>
                   </View>
                   <Text
@@ -580,12 +585,13 @@ const Agent = (props) => {
                 }}
                 key={item.id}
               >
-                <View
-                  style={{
-                    width: 90,
-                    height: 90,
-                    backgroundColor: 'pink'
+                <FastImage
+                  style={{ width: 90, height: 90, marginLeft: 10 }}
+                  source={{
+                    uri: item.linkImage,
+                    priority: FastImage.priority.normal
                   }}
+                  resizeMode={FastImage.resizeMode.contain}
                 />
                 <View
                   style={{
@@ -707,7 +713,7 @@ const Agent = (props) => {
           <Ionicons
             name="arrow-back"
             size={40}
-            color="white"
+            color={Color.Primary}
             style={{
               marginRight: 4
             }}
